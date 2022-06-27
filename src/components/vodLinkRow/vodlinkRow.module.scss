@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-flow: nowrap column;
+  margin-bottom: 1rem;
+  border: 1px solid black;
+}
+
+.matchupContainer {
+  display: flex;
+  flex-flow: nowrap column;
+  gap: 10px;
+}
+
+.vodlinkContainer {
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: space-around;
+}

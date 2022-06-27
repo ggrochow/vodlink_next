@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  row-gap: 10px;
+  column-gap: 5px;
+}
+
+.championContainer {
+  max-width: 100px;
+}
+
+.iconContainer {
+  margin: auto;
+}
+
+.name {
+  text-align: center;
+  padding: 1.5px;
+}
