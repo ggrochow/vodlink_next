@@ -148,6 +148,26 @@ function Channels({ channels }) {
           </div>
         ))}
       </div>
+      <hr />
+      <div>
+        <code>
+          {JSON.stringify(
+            channels?.map((channel) => {
+              return {
+                channel_name: channel.login,
+                summoners: channel.summoners.map((summoner) => {
+                  return {
+                    summoner_name: summoner.summonerName,
+                    region: summoner.region?.toUpperCase(),
+                  };
+                }),
+              };
+            }),
+            null,
+            4
+          )}
+        </code>
+      </div>
     </div>
   );
 }

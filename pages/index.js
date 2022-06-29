@@ -21,7 +21,7 @@ function Index({ roleCounts }) {
               <Link href={`/search/${role}`}>
                 <a>
                   <RoleIcon role={roleIcon} />
-                  {count.count}
+                  {count?.count}
                 </a>
               </Link>
             </div>

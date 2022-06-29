@@ -34,7 +34,5 @@ export function fetchTwitchChannels() {
 }
 
 export function addChannelInfo(body) {
-  return axios.post(`${API_URL}/channels`, {
-    body,
-  });
+  return axios.post(`${API_URL}/channels`, body);
 }

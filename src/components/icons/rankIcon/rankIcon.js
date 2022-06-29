@@ -3,13 +3,16 @@ import PropTypes from "prop-types";
 import { getRankByRank } from "../../../../lol_data/ranks";
 import { titleCase } from "../../../utils";
 
+const noRankTiers = ["CHALLENGER", "GRANDMASTER", "MASTER"];
 function RankIcon({ rank, tier, height, width }) {
   const rankData = getRankByRank(tier);
   if (!rankData) {
     return null;
   }
 
-  const title = `${titleCase(tier)} ${rank}`;
+  const title = `${titleCase(tier)}${
+    noRankTiers.includes(tier) ? "" : ` ${rank}`
+  }`;
   return (
     <div style={{ height: `${height}px`, width: `${width}px` }}>
       <Image
