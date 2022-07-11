@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import Image from "next/image";
+import Image from "next/future/image";
 
-function RoleIcon({ role }) {
+function RoleIcon({ role, height, width }) {
   return (
     <Image
       title={role.role}
@@ -9,8 +9,8 @@ function RoleIcon({ role }) {
       src={role.imageSrc}
       placeholder={"blur"}
       blurDataURL={role.imagePlaceholder}
-      height={72}
-      width={72}
+      height={height}
+      width={width}
     />
   );
 }
@@ -22,6 +22,8 @@ RoleIcon.propTypes = {
     imageSrc: PropTypes.string,
     imagePlaceholder: PropTypes.string,
   }),
+  height: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 export default RoleIcon;

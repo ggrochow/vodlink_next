@@ -5,11 +5,12 @@ import { DB_ROLES } from "../../lol_data/constants";
 import ChampionList from "../../src/components/championList/championList";
 import { useRouter } from "next/router";
 import { SearchProgressLinks } from "../../src/components/searchProgressLinks";
+import { pageRevalidateTime } from "../../src/constants";
 
 function MatchupsByLane({ championCounts }) {
   const router = useRouter();
   const { role } = router.query;
-  const linkGenerator = (champion) => `/search/${role}/${champion.key}`;
+  const linkGenerator = (key) => `/search/${role}/${key}`;
   return (
     <div>
       <SearchProgressLinks role={role} />
@@ -33,7 +34,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props,
-    revalidate: 60 * 60, // 1 hour
+    revalidate: pageRevalidateTime,
   };
 }
 

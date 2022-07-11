@@ -1,0 +1,19 @@
+@use '/styles/constants';
+
+@mixin basicBorder {
+  border: constants.$borderSize solid constants.$borderDarkGray
+}
+
+@mixin basicButton {
+  @include basicBorder;
+  background-color: constants.$darkGray;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    background-color: constants.$lightGrey
+  }
+
+  &:active {
+    background-color: constants.$borderDarkGray;
+  }
+}

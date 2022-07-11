@@ -157,7 +157,7 @@ function Channels({ channels }) {
                 channel_name: channel.login,
                 summoners: channel.summoners.map((summoner) => {
                   return {
-                    summoner_name: summoner.summonerName,
+                    name: summoner.summonerName,
                     region: summoner.region?.toUpperCase(),
                   };
                 }),

@@ -22,10 +22,14 @@ export function fetchEnemyChampCounts(role, championId) {
 
 export function fetchVodlinksByMatchup(role, championId, enemyChampionId) {
   const params = {
-    streamerRole: role,
+    ROLE: role,
   };
-  params[`ally_${role}`] = championId;
-  params[`enemy_${role}`] = enemyChampionId;
+  params[`ALLY_${role}`] = championId;
+  params[`ENEMY_${role}`] = enemyChampionId;
+  return makeRequest(`${API_URL}/vodlinks/matchupSearch`, params);
+}
+
+export function fetchVodlinksByFullMatchup(params) {
   return makeRequest(`${API_URL}/vodlinks/matchupSearch`, params);
 }
 

@@ -1,0 +1,70 @@
+@use '/styles/constants';
+@use './styles/mixins';
+
+.container {
+  padding: 20px 0;
+  background-color: constants.$mediumGrey;
+  border: constants.$borderSize solid constants.$borderDarkGray;
+}
+
+.matchupContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 10px;
+
+  > div {
+    display: flex;
+    justify-content: space-evenly;
+  }
+}
+
+.roleRow {
+  background-color: constants.$lightGrey;
+  border-top: 1px solid constants.$borderDarkGray;
+  border-bottom: 1px solid constants.$borderDarkGray;
+  padding: 10px 0;
+}
+
+.closeCircle {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 25px;
+  min-height: 25px;
+  border-radius: 100%;
+  font-size: 11px;
+  margin-left: -7px;
+  margin-top: -7px;
+
+  @include mixins.basicButton;
+}
+
+
+.matchupRole {
+  text-align: center;
+}
+
+.closeContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .closeButton {
+    cursor: pointer;
+    background-color: constants.$lightGrey;
+    border: constants.$borderSize solid constants.$borderDarkGray;
+    padding: 10px 15px;
+
+    &:hover {
+      background-color: constants.$darkGray;
+    }
+  }
+}
+
+.championButton {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/future/image";
 import PropTypes from "prop-types";
 import { getRankByRank } from "../../../../lol_data/ranks";
 import { titleCase } from "../../../utils";
@@ -14,17 +14,15 @@ function RankIcon({ rank, tier, height, width }) {
     noRankTiers.includes(tier) ? "" : ` ${rank}`
   }`;
   return (
-    <div style={{ height: `${height}px`, width: `${width}px` }}>
-      <Image
-        title={title}
-        alt={title}
-        src={rankData.imageSrc}
-        placeholder={"blur"}
-        blurDataURL={rankData.imagePlaceholder}
-        height={height}
-        width={width}
-      />
-    </div>
+    <Image
+      title={title}
+      alt={title}
+      src={rankData.imageSrc}
+      placeholder={"blur"}
+      blurDataURL={rankData.imagePlaceholder}
+      height={height}
+      width={width}
+    />
   );
 }
 

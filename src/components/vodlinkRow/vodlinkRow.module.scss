@@ -1,0 +1,161 @@
+@use 'styles/constants';
+
+@mixin selectedRole {
+  background-color: constants.$lightGrey;
+  padding-top: 6px;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  border-left: constants.$borderSize solid constants.$borderDarkGray;
+  border-right: constants.$borderSize solid constants.$borderDarkGray;
+
+  @media(max-width: 442px) {
+    &:first-of-type {
+      border-left: constants.$borderSize solid constants.$lightGrey;
+    }
+
+    &:last-of-type {
+      border-right: constants.$borderSize solid constants.$lightGrey;
+    }
+  }
+}
+
+.container {
+  margin-bottom: 1rem;
+  background-color: constants.$mediumGrey;
+  border: constants.$borderSize solid constants.$borderDarkGray;
+}
+
+.title {
+  background-color: constants.$mediumGrey;
+  border-bottom: 1px solid constants.$borderDarkGray;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  padding: 10px 5%;
+  > * {
+    flex-basis: 35%;
+    text-align: center;
+  }
+}
+
+.matchup {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.team, .roles, .participant {
+  display: flex;
+  flex-flow: row nowrap;
+
+  > div {
+    padding: 5px;
+  }
+}
+
+.team, .roles {
+  justify-content: center;
+}
+
+.team {
+  border-top: constants.$borderSize solid constants.$borderDarkGray;
+  border-bottom: constants.$borderSize solid constants.$borderDarkGray;
+  > div {
+    border-left: constants.$borderSize solid constants.$mediumGrey;
+    border-right: constants.$borderSize solid constants.$mediumGrey;
+
+    &.active {
+      @include selectedRole;
+    }
+  }
+}
+
+.roles {
+  background-color: constants.$darkGray;
+  > div {
+    border-left: constants.$borderSize solid constants.$darkGray;
+    border-right: constants.$borderSize solid constants.$darkGray;
+    cursor: pointer;
+
+    &.selected {
+      @include selectedRole;
+    }
+  }
+}
+
+.participant {
+  background-color: constants.$lightGrey;
+  justify-content: space-between;
+  padding: 10px 5px;
+
+  > div {
+    flex-basis: 20%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    p {
+      text-align: center;
+    }
+  }
+
+  .participantRunes {
+    flex-flow: row;
+    flex-grow: 1;
+    display: flex;
+
+    > div {
+      display: flex;
+      flex-flow: row nowrap;
+    }
+  }
+
+  .participantName {
+    text-align: center;
+    a {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      column-gap: 5px;
+      font-weight: bold;
+      text-decoration: underline constants.$twitchColor;
+      text-decoration-thickness: 2px;
+
+      &:focus, &:hover {
+        color: darken(constants.$twitchColor, 25%);
+      }
+
+      &:active {
+        color: constants.$mainColor
+      }
+    }
+  }
+
+  .participantMastery , .participantRank {
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 700px) {
+    .participantName {
+      flex-basis: 30%;
+      flex-grow: 1;
+    }
+    .participantRank, .participantMastery {
+      flex-basis: 15%;
+    }
+    .participantRunes {
+      > div {
+        flex-flow: column nowrap;
+      }
+    }
+  }
+
+  @media (max-width: 400px) {
+    .participantRank, .participantMastery {
+      justify-content: center;
+      span {
+        display: none;
+      }
+    }
+  }
+}

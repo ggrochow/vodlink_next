@@ -1,4 +1,5 @@
 import roleJson from "./roles.json";
+import { titleCase } from "../src/utils";
 
 export function dbRoleToLoLRole(dbRole) {
   switch (dbRole) {
@@ -12,6 +13,30 @@ export function dbRoleToLoLRole(dbRole) {
       return dbRole;
   }
 }
+
+export function dbRoleToMatchupUrlRole(dbRole, team) {
+  return `${team.toLowerCase()}${titleCase(dbRole)}`;
+}
+
+export function shortRoleToDbRole(shortRole) {
+  switch (shortRole) {
+    case "MID":
+      return "MIDDLE";
+    case "SUP":
+      return "UTILITY";
+    case "JG":
+      return "JUNGLE";
+    case "BOT":
+      return "BOTTOM";
+    case "TOP":
+      return "TOP";
+    default:
+      return null;
+  }
+}
+
+export const dbRoles = ["TOP", "JUNGLE", "MIDDLE", "UTILITY", "BOTTOM"];
+export const shortRoles = ["MID", "SUP", "JG", "TOP", "BOT"];
 
 export function getRoleByDbRole(dbRole) {
   return getRoleByRoleAndRank(dbRoleToLoLRole(dbRole), "CHALLENGER");

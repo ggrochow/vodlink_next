@@ -23,13 +23,14 @@ function ChampionList({ filter, counts, linkGenerator }) {
     });
   }, [counts]);
 
+  // TODO include message if we filter out the entire list
   return (
     <div className={styles.container}>
       {sortedChampions.map((champ) => {
         if (filter && !filter(champ)) return null;
 
         const count =
-          counts.find((count) => count.champion_id === Number(champ.key))
+          counts?.find((count) => count.champion_id === Number(champ.key))
             ?.count || 0;
 
         if (counts && count === 0) {
@@ -37,15 +38,15 @@ function ChampionList({ filter, counts, linkGenerator }) {
         }
         return (
           <div key={champ.key} className={styles.championContainer}>
-            <Link href={linkGenerator(champ)}>
+            <Link href={linkGenerator(champ.key)}>
               <a>
                 <div className={styles.iconContainer}>
                   <ChampionIcon
                     image={champ.imageUrl}
                     placeholder={champ.placeholderBase64}
                     name={champ.name}
-                    height={60}
-                    width={60}
+                    height={50}
+                    width={50}
                   />
                 </div>
               </a>

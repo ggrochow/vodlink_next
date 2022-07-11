@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/future/image";
 import Mastery1 from "../../../../public/static/mastery/mastery-1.png";
 import Mastery2 from "../../../../public/static/mastery/mastery-2.png";
 import Mastery3 from "../../../../public/static/mastery/mastery-3.png";

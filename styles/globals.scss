@@ -1,3 +1,5 @@
+@use '/styles/constants';
+
 html,
 body {
   padding: 0;
@@ -6,11 +8,26 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+body {
+  background-color: constants.$darkGray;
+  padding: 3px;
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 * {
   box-sizing: border-box;
+  color: constants.$textWhite
+}
+
+input, select, option {
+  color: initial;
 }

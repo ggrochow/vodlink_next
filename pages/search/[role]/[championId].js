@@ -4,13 +4,21 @@ import PropTypes from "prop-types";
 import championData from "../../../lol_data/champion.json";
 import ChampionList from "../../../src/components/championList/championList";
 import { SearchProgressLinks } from "../../../src/components/searchProgressLinks";
+import { pageRevalidateTime } from "../../../src/constants";
+import { fullSearchLink, titleCase } from "../../../src/utils";
 
 function MatchupsByRoleAndChampion({ championCounts }) {
   const router = useRouter();
   const { role, championId } = router.query;
   const champion = championData[championId];
-  const linkGenerator = (enemyChampion) =>
-    `/search/${role}/${champion.key}/${enemyChampion.key}`;
+  const params = {
+    streamerRole: role,
+    [`ally${titleCase(role)}`]: champion.key,
+  };
+  const linkGenerator = (key) => {
+    params[`enemy${titleCase(role)}`] = key;
+    return fullSearchLink(params);
+  };
 
   return (
     <div>
@@ -44,7 +52,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props,
-    revalidate: 60 * 60,
+    revalidate: pageRevalidateTime,
   };
 }
 
