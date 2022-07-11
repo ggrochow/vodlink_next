@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
 import { dbRoles } from "../../../../../../../../../../../../../lol_data/roles";
-import { fetchVodlinksByFullMatchup } from "../../../../../../../../../../../../../src/external_apis/vodlink";
+import {
+  fetchChampCounts,
+  fetchVodlinksByFullMatchup,
+} from "../../../../../../../../../../../../../src/external_apis/vodlink";
 import { pageRevalidateTime } from "../../../../../../../../../../../../../src/constants";
 import { getChampionById } from "../../../../../../../../../../../../../lol_data/champions";
 import { MatchupSelect } from "../../../../../../../../../../../../../src/components/matchupSelect";
@@ -9,10 +12,18 @@ import {
   vodlinkRowDataTransformer,
 } from "../../../../../../../../../../../../../src/components/vodlinkRow";
 import { Pagination } from "../../../../../../../../../../../../../src/components/pagination";
-import { fullSearchLink } from "../../../../../../../../../../../../../src/utils";
+import {
+  championIdKeys,
+  fullSearchLink,
+  getFullMatchupCountParams,
+} from "../../../../../../../../../../../../../src/utils";
 import { matchupData } from "../../../../../../../../../../../../../src/prop_type_shapes/vodlinkRow";
 
-function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
+function FullSearch({ streamerRole, matchupData, vodlinks, page, counts }) {
+  if (!vodlinks) {
+    return null;
+  }
+
   const searchUrlBuilder = (key) => (value) => {
     const params = {
       streamerRole,
@@ -34,7 +45,7 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
   };
   const paginationUrlBuilder = searchUrlBuilder("page");
 
-  const { data, pagination, counts } = vodlinks;
+  const { data, pagination } = vodlinks;
   return (
     <div>
       <MatchupSelect
@@ -88,19 +99,6 @@ FullSearch.propTypes = {
   }),
 };
 
-const championIdKeys = {
-  allyTop: "ALLY_TOP",
-  allyMid: "ALLY_MIDDLE",
-  allyBot: "ALLY_BOTTOM",
-  allyJungle: "ALLY_JUNGLE",
-  allySupport: "ALLY_UTILITY",
-  enemyTop: "ENEMY_TOP",
-  enemyMid: "ENEMY_MIDDLE",
-  enemyBot: "ENEMY_BOTTOM",
-  enemyJungle: "ENEMY_JUNGLE",
-  enemySupport: "ENEMY_UTILITY",
-};
-
 export async function getStaticProps({ params }) {
   const props = {};
   const apiParams = {};
@@ -141,10 +139,22 @@ export async function getStaticProps({ params }) {
   props.matchupData = matchupData;
 
   try {
-    const response = await fetchVodlinksByFullMatchup(apiParams);
-    props.vodlinks = response.data;
+    const matchupCountSearches =
+      getFullMatchupCountParams(apiParams).map(fetchChampCounts);
+    const [vodlinkResponse, ...countResponses] = await Promise.all([
+      fetchVodlinksByFullMatchup(apiParams),
+      ...matchupCountSearches,
+    ]);
+
+    const counts = {};
+    for (let count of countResponses) {
+      const countData = count.data;
+      counts[countData.role] = countData.counts;
+    }
+
+    props.vodlinks = vodlinkResponse.data;
+    props.counts = counts;
   } catch (error) {
-    console.error(error);
     props.error = error.message;
   }
 

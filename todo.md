@@ -4,3 +4,5 @@ TODO
 - check how im using next image with layout and sizes
 - page titles/meta
 - home page
+- remove admin stuff
+- auth token

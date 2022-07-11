@@ -57,3 +57,32 @@ export function fullSearchLink({
 }) {
   return `/fullsearch/${streamerRole}/${allyTop}/${allyMiddle}/${allyBottom}/${allyJungle}/${allyUtility}/${enemyTop}/${enemyMiddle}/${enemyBottom}/${enemyJungle}/${enemyUtility}/${page}`;
 }
+
+export const championIdKeys = {
+  allyTop: "ALLY_TOP",
+  allyMid: "ALLY_MIDDLE",
+  allyBot: "ALLY_BOTTOM",
+  allyJungle: "ALLY_JUNGLE",
+  allySupport: "ALLY_UTILITY",
+  enemyTop: "ENEMY_TOP",
+  enemyMid: "ENEMY_MIDDLE",
+  enemyBot: "ENEMY_BOTTOM",
+  enemyJungle: "ENEMY_JUNGLE",
+  enemySupport: "ENEMY_UTILITY",
+};
+
+export function getFullMatchupCountParams(apiParams) {
+  return Object.values(championIdKeys).map((apiRole) => {
+    const matchupSearchParams = { ...apiParams, COUNT_ROLE: apiRole };
+    const isStreamerRole =
+      apiRole.slice(0, 4) === "ALLY" && apiRole.slice(5) === apiParams.ROLE;
+    if (isStreamerRole) {
+      // this search returns all possible champions in this role
+      // therefore we can't also filter by it
+      delete matchupSearchParams[apiRole];
+    }
+    delete matchupSearchParams.PAGE;
+
+    return matchupSearchParams;
+  });
+}

@@ -5,28 +5,8 @@ function makeRequest(url, params) {
   return axios.get(url, { params });
 }
 
-export function fetchRoleCounts(championId) {
-  return makeRequest(`${API_URL}/counts/roleCounts`, { championId });
-}
-
-export function fetchChampCounts(role) {
-  return makeRequest(`${API_URL}/counts/champCounts`, { role });
-}
-
-export function fetchEnemyChampCounts(role, championId) {
-  return makeRequest(`${API_URL}/counts/enemyChampCounts`, {
-    championId,
-    role,
-  });
-}
-
-export function fetchVodlinksByMatchup(role, championId, enemyChampionId) {
-  const params = {
-    ROLE: role,
-  };
-  params[`ALLY_${role}`] = championId;
-  params[`ENEMY_${role}`] = enemyChampionId;
-  return makeRequest(`${API_URL}/vodlinks/matchupSearch`, params);
+export function fetchChampCounts(params) {
+  return makeRequest(`${API_URL}/counts/champCounts`, params);
 }
 
 export function fetchVodlinksByFullMatchup(params) {
