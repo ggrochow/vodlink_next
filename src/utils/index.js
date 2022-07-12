@@ -86,3 +86,13 @@ export function getFullMatchupCountParams(apiParams) {
     return matchupSearchParams;
   });
 }
+
+export function mapMatchupCounts(countResponses) {
+  const counts = {};
+  for (let count of countResponses) {
+    const countData = count.data;
+    counts[countData.role] = countData.counts;
+  }
+
+  return counts;
+}

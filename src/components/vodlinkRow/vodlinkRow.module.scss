@@ -36,6 +36,13 @@
     flex-basis: 35%;
     text-align: center;
   }
+  a > p {
+    text-decoration: underline;
+
+    &:hover, &:focus {
+        color: darken(constants.$textWhite, 20%)
+    }
+  }
 }
 
 .matchup {

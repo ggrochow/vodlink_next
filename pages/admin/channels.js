@@ -189,6 +189,10 @@ Channels.propTypes = {
 };
 
 export async function getStaticProps() {
+  if (process.env.NODE_ENV !== "development") {
+    return { notFound: true };
+  }
+
   const props = {
     error: null,
     channels: null,

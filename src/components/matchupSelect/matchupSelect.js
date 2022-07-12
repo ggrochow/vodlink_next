@@ -32,7 +32,11 @@ function MatchupSelect({ streamerRole, matchupData, counts }) {
     return fullSearchLink(params);
   };
   const handleChampionClick = (role) => {
-    setMatchupRole(role);
+    if (role === matchupRole) {
+      setMatchupRole(null);
+    } else {
+      setMatchupRole(role);
+    }
   };
   const closeChampionList = () => setMatchupRole(null);
   let urlRole;

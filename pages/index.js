@@ -1,51 +1,96 @@
 import React from "react";
-import Link from "next/link";
-import styles from "../styles/index.module.scss";
-import { DB_ROLES } from "../lol_data/constants";
-import { getRoleByDbRole } from "../lol_data/roles";
-import { RoleIcon } from "../src/components/icons/roleIcon";
-import ChampionList from "../src/components/championList/championList";
-import { fullSearchLink } from "../src/utils";
+import {
+  fetchChampCounts,
+  fetchVodlinksByFullMatchup,
+} from "../src/external_apis/vodlink";
+import {
+  fullSearchLink,
+  getFullMatchupCountParams,
+  mapMatchupCounts,
+} from "../src/utils";
+import {
+  VodlinkRow,
+  vodlinkRowDataTransformer,
+} from "../src/components/vodlinkRow";
+import { MatchupSelect } from "../src/components/matchupSelect";
+import { Pagination } from "../src/components/pagination";
+import { Head } from "../src/components/head";
 
-function Index({ roleCounts, championCounts }) {
+function Index({ counts, vodlinks }) {
+  const searchUrlBuilder = (key) => (value) => {
+    const params = {
+      [key]: value,
+    };
+
+    return fullSearchLink(params);
+  };
+  const paginationUrlBuilder = searchUrlBuilder("page");
+
+  const { pagination, data } = vodlinks;
   return (
     <div>
-      <div className={styles.roleContainer}>
-        {DB_ROLES.map((role) => {
-          const count = roleCounts?.find(
-            (roleCount) => roleCount.role === role
-          );
-          const roleIcon = getRoleByDbRole(role);
-          return (
-            <div key={role} className={styles.roleIconContainer}>
-              <Link href={fullSearchLink({ streamerRole: role })}>
-                <a>
-                  <RoleIcon role={roleIcon} height={72} width={72} />
-                  {count?.count}
-                </a>
-              </Link>
-            </div>
-          );
-        })}
-      </div>
-      <p>roles - {roleCounts?.reduce((acc, val) => acc + val.count, 0)}</p>
-      <div>
-        <p>
-          champs - {championCounts?.reduce((acc, val) => acc + val.count, 0)}
-        </p>
-        <ChampionList linkGenerator={() => "#"} counts={championCounts} />
-      </div>
+      <Head
+        title="LoL VodFind"
+        description={`Search through ${pagination.total} LoL games by matchup to find vods to help you improve.`}
+      />
+      <MatchupSelect
+        key={searchUrlBuilder()()}
+        counts={counts}
+        matchupData={{}}
+      />
+
+      {pagination && (
+        <Pagination
+          total={pagination.total}
+          limit={pagination.limit}
+          page={pagination.page}
+          linkGenerator={paginationUrlBuilder}
+        />
+      )}
+
+      {data?.map((vodlink) => {
+        return (
+          <VodlinkRow
+            key={vodlink.native_match_id}
+            vodlink={vodlinkRowDataTransformer(vodlink)}
+          />
+        );
+      })}
+
+      {pagination && (data?.length || 0) > 1 && (
+        <Pagination
+          total={pagination.total}
+          limit={pagination.limit}
+          page={pagination.page}
+          linkGenerator={paginationUrlBuilder}
+        />
+      )}
     </div>
   );
 }
 
-Index.propTypex = {};
-
 export async function getStaticProps() {
   const props = {
-    roleCounts: [],
+    counts: [],
+    vodlinks: null,
     errors: null,
   };
+
+  try {
+    const matchupCountSearches = getFullMatchupCountParams({}).map(
+      fetchChampCounts
+    );
+    const [vodlinkResults, ...matchupCountResults] = await Promise.all([
+      fetchVodlinksByFullMatchup({}),
+      ...matchupCountSearches,
+    ]);
+
+    props.vodlinks = vodlinkResults.data;
+    props.counts = mapMatchupCounts(matchupCountResults);
+  } catch (error) {
+    console.error(error);
+    props.error = error.message;
+  }
 
   return {
     props,

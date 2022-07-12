@@ -16,8 +16,11 @@ import {
   championIdKeys,
   fullSearchLink,
   getFullMatchupCountParams,
+  mapMatchupCounts,
 } from "../../../../../../../../../../../../../src/utils";
 import { matchupData } from "../../../../../../../../../../../../../src/prop_type_shapes/vodlinkRow";
+import { Head } from "../../../../../../../../../../../../../src/components/head";
+import React from "react";
 
 function FullSearch({ streamerRole, matchupData, vodlinks, page, counts }) {
   if (!vodlinks) {
@@ -44,10 +47,16 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page, counts }) {
     return fullSearchLink(params);
   };
   const paginationUrlBuilder = searchUrlBuilder("page");
-
   const { data, pagination } = vodlinks;
   return (
     <div>
+      <Head
+        title="LoL VodFind"
+        description={`Searching through ${pagination.total}${
+          streamerRole ? ` ${streamerRole}` : ""
+        } matches`}
+      />
+
       <MatchupSelect
         key={searchUrlBuilder()()}
         counts={counts}
@@ -146,14 +155,8 @@ export async function getStaticProps({ params }) {
       ...matchupCountSearches,
     ]);
 
-    const counts = {};
-    for (let count of countResponses) {
-      const countData = count.data;
-      counts[countData.role] = countData.counts;
-    }
-
     props.vodlinks = vodlinkResponse.data;
-    props.counts = counts;
+    props.counts = mapMatchupCounts(countResponses);
   } catch (error) {
     props.error = error.message;
   }
