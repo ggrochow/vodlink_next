@@ -4,6 +4,7 @@ import { ChampionIcon } from "../icons/championIcon";
 import styles from "./championlist.module.scss";
 import championJson from "../../../lol_data/champion.json";
 import Link from "next/link";
+import { LoadingSpinner } from "../loadingSpinner";
 const championData = Object.values(championJson);
 
 function ChampionList({ filter, counts, linkGenerator, loading }) {
@@ -24,7 +25,12 @@ function ChampionList({ filter, counts, linkGenerator, loading }) {
   }, [counts]);
 
   if (loading) {
-    return <div className={styles.container}>Loading...</div>;
+    return (
+      <div className={styles.loading}>
+        <LoadingSpinner />
+        Loading...
+      </div>
+    );
   }
 
   // TODO include message if we filter out the entire list
