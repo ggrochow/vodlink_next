@@ -5,8 +5,14 @@ import Link from "next/link";
 function Pagination({ total, limit, page, linkGenerator }) {
   const totalPages = Math.ceil(total / limit);
   const currentPage = page < 1 ? 1 : page > totalPages ? totalPages : page;
-  const previousPage = currentPage === 1 ? 1 : currentPage - 1;
-  const nextPage = currentPage === totalPages ? totalPages : currentPage + 1;
+  const previousPage = currentPage === 1 ? 1 : page - 1;
+  const nextPage = currentPage === totalPages ? totalPages : page + 1;
+
+  const showFirst = totalPages > 1 && page > 1;
+  const showPrev = totalPages > 1 && previousPage < page;
+  const showNext = totalPages > 1 && nextPage > page;
+  const showLast = totalPages > 1 && totalPages > page;
+
   const firstArrow = "<-";
   const prevArrow = " < ";
   const nextArrow = " > ";
@@ -15,17 +21,15 @@ function Pagination({ total, limit, page, linkGenerator }) {
   // 1 / 5
   return (
     <div className={styles.container}>
-      {page === 1 && <span className={styles.disabled}>{firstArrow}</span>}
-      {page !== 1 && (
+      {!showFirst && <span className={styles.disabled}>{firstArrow}</span>}
+      {showFirst && (
         <Link href={linkGenerator(1)}>
           <a>{firstArrow}</a>
         </Link>
       )}
 
-      {previousPage === page && (
-        <span className={styles.disabled}>{prevArrow}</span>
-      )}
-      {previousPage !== page && (
+      {!showPrev && <span className={styles.disabled}>{prevArrow}</span>}
+      {showPrev && (
         <Link href={linkGenerator(previousPage)}>
           <a>{prevArrow}</a>
         </Link>
@@ -35,19 +39,15 @@ function Pagination({ total, limit, page, linkGenerator }) {
         Page {page} / {totalPages}
       </span>
 
-      {nextPage === page && (
-        <span className={styles.disabled}>{nextArrow}</span>
-      )}
-      {nextPage !== page && (
+      {!showNext && <span className={styles.disabled}>{nextArrow}</span>}
+      {showNext && (
         <Link href={linkGenerator(nextPage)}>
           <a>{nextArrow}</a>
         </Link>
       )}
 
-      {totalPages === page && (
-        <span className={styles.disabled}>{lastArrow}</span>
-      )}
-      {totalPages !== page && (
+      {!showLast && <span className={styles.disabled}>{lastArrow}</span>}
+      {showLast && (
         <Link href={linkGenerator(totalPages)}>
           <a>{lastArrow}</a>
         </Link>
