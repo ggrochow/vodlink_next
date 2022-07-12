@@ -49,7 +49,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
     }
     setLoading(true);
     const champCountParams = {
-      ...apiMatchupParams(matchupData),
+      ...apiMatchupParams(matchupData, streamerRole),
       COUNT_ROLE: matchupRole,
     };
     delete champCountParams.PAGE;
@@ -68,7 +68,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
           return { ...prevCounts, [matchupRole]: [] };
         });
       });
-  }, [matchupRole, matchupData, counts]);
+  }, [matchupRole, matchupData, counts, streamerRole]);
 
   let urlRole;
   let team;
