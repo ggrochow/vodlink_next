@@ -8,6 +8,7 @@ import {
 import { MatchupSelect } from "../src/components/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
+import { pageRevalidateTime } from "../src/constants";
 
 function Index({ vodlinks }) {
   const searchUrlBuilder = (key) => (value) => {
@@ -75,7 +76,7 @@ export async function getStaticProps() {
 
   return {
     props,
-    revalidate: 60 * 60, // 1 hour
+    revalidate: pageRevalidateTime,
   };
 }
 

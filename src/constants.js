@@ -1,1 +1,1 @@
-export const pageRevalidateTime = 60 * 60; // one hour
+export const pageRevalidateTime = 15 * 60; // one hour
