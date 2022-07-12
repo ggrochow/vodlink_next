@@ -27,9 +27,11 @@ export function twitchVodLink(vodId, secondsOffset) {
 
 export function matchHistoryLink(rawId) {
   const [region, id] = rawId.split("_");
-  const historyRegion = region.replace(/[0-9]/g, "").toLowerCase();
+  let historyRegion = region.replace(/[0-9]/g, "").toLowerCase();
+  if (historyRegion === "eun") {
+    historyRegion = "eune";
+  }
 
-  // TODO fix eun -> eune, check others as well
   return `https://www.leagueofgraphs.com/match/${historyRegion}/${id}`;
 }
 
@@ -91,7 +93,12 @@ export function mapMatchupCounts(countResponses) {
   const counts = {};
   for (let count of countResponses) {
     const countData = count.data;
-    counts[countData.role] = countData.counts;
+
+    if (!countData.role || !countData.counts) {
+      console.error("no role", countData.role, countData.counts, count);
+    } else {
+      counts[countData.role] = countData.counts;
+    }
   }
 
   return counts;
