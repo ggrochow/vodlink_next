@@ -94,11 +94,7 @@ export function mapMatchupCounts(countResponses) {
   for (let count of countResponses) {
     const countData = count.data;
 
-    if (!countData.role || !countData.counts) {
-      console.error("no role", countData.role, countData.counts, count);
-    } else {
-      counts[countData.role] = countData.counts;
-    }
+    counts[countData.role] = countData.counts;
   }
 
   return counts;
