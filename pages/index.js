@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  fetchChampCounts,
-  fetchVodlinksByFullMatchup,
-} from "../src/external_apis/vodlink";
-import {
-  fullSearchLink,
-  getFullMatchupCountParams,
-  mapMatchupCounts,
-} from "../src/utils";
+import { fetchVodlinksByFullMatchup } from "../src/external_apis/vodlink";
+import { fullSearchLink } from "../src/utils";
 import {
   VodlinkRow,
   vodlinkRowDataTransformer,
@@ -16,7 +9,7 @@ import { MatchupSelect } from "../src/components/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
 
-function Index({ counts, vodlinks }) {
+function Index({ vodlinks }) {
   const searchUrlBuilder = (key) => (value) => {
     const params = {
       [key]: value,
@@ -33,11 +26,7 @@ function Index({ counts, vodlinks }) {
         title="LoL VodFind"
         description={`Search through ${pagination.total} LoL games by matchup to find vods to help you improve.`}
       />
-      <MatchupSelect
-        key={searchUrlBuilder()()}
-        counts={counts}
-        matchupData={{}}
-      />
+      <MatchupSelect key={searchUrlBuilder()()} matchupData={{}} />
 
       {pagination && (
         <Pagination
@@ -71,22 +60,14 @@ function Index({ counts, vodlinks }) {
 
 export async function getStaticProps() {
   const props = {
-    counts: [],
     vodlinks: null,
     errors: null,
   };
 
   try {
-    const matchupCountSearches = getFullMatchupCountParams({}).map(
-      fetchChampCounts
-    );
-    const [vodlinkResults, ...matchupCountResults] = await Promise.all([
-      fetchVodlinksByFullMatchup({}),
-      ...matchupCountSearches,
-    ]);
+    const vodlinkResults = await fetchVodlinksByFullMatchup({});
 
     props.vodlinks = vodlinkResults.data;
-    props.counts = mapMatchupCounts(matchupCountResults);
   } catch (error) {
     console.error(error);
     props.error = error.message;

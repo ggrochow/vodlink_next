@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { dbRoles } from "../../../../../../../../../../../../../lol_data/roles";
 import {
-  fetchChampCounts,
-  fetchVodlinksByFullMatchup,
-} from "../../../../../../../../../../../../../src/external_apis/vodlink";
+  dbRoles,
+  dbRoleToLoLRole,
+} from "../../../../../../../../../../../../../lol_data/roles";
+import { fetchVodlinksByFullMatchup } from "../../../../../../../../../../../../../src/external_apis/vodlink";
 import { pageRevalidateTime } from "../../../../../../../../../../../../../src/constants";
 import { getChampionById } from "../../../../../../../../../../../../../lol_data/champions";
 import { MatchupSelect } from "../../../../../../../../../../../../../src/components/matchupSelect";
@@ -15,18 +15,13 @@ import { Pagination } from "../../../../../../../../../../../../../src/component
 import {
   championIdKeys,
   fullSearchLink,
-  getFullMatchupCountParams,
-  mapMatchupCounts,
+  titleCase,
 } from "../../../../../../../../../../../../../src/utils";
 import { matchupData } from "../../../../../../../../../../../../../src/prop_type_shapes/vodlinkRow";
 import { Head } from "../../../../../../../../../../../../../src/components/head";
 import React from "react";
 
-function FullSearch({ streamerRole, matchupData, vodlinks, page, counts }) {
-  if (!vodlinks) {
-    return null;
-  }
-
+function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
   const searchUrlBuilder = (key) => (value) => {
     const params = {
       streamerRole,
@@ -53,13 +48,12 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page, counts }) {
       <Head
         title="LoL VodFind"
         description={`Searching through ${pagination.total}${
-          streamerRole ? ` ${streamerRole}` : ""
+          streamerRole ? ` ${titleCase(dbRoleToLoLRole(streamerRole))}` : ""
         } matches`}
       />
 
       <MatchupSelect
         key={searchUrlBuilder()()}
-        counts={counts}
         streamerRole={streamerRole}
         matchupData={matchupData}
       />
@@ -148,16 +142,11 @@ export async function getStaticProps({ params }) {
   props.matchupData = matchupData;
 
   try {
-    const matchupCountSearches =
-      getFullMatchupCountParams(apiParams).map(fetchChampCounts);
-    const [vodlinkResponse, ...countResponses] = await Promise.all([
-      fetchVodlinksByFullMatchup(apiParams),
-      ...matchupCountSearches,
-    ]);
+    const vodlinkResponse = await fetchVodlinksByFullMatchup(apiParams);
 
     props.vodlinks = vodlinkResponse.data;
-    props.counts = mapMatchupCounts(countResponses);
   } catch (error) {
+    console.error(JSON.stringify(error?.response?.data, null, 4));
     props.error = error.message;
   }
 

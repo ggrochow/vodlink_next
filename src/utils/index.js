@@ -73,6 +73,18 @@ export const championIdKeys = {
   enemySupport: "ENEMY_UTILITY",
 };
 
+export function apiMatchupParams(params) {
+  const apiParams = {};
+
+  for (let [key, apiKey] of Object.entries(championIdKeys)) {
+    if (params[key]) {
+      apiParams[apiKey] = params[key];
+    }
+  }
+
+  return apiParams;
+}
+
 export function getFullMatchupCountParams(apiParams) {
   return Object.values(championIdKeys).map((apiRole) => {
     const matchupSearchParams = { ...apiParams, COUNT_ROLE: apiRole };

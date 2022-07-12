@@ -2,15 +2,18 @@ import PropTypes from "prop-types";
 import styles from "./matchupSelect.module.scss";
 import { matchupData } from "../../prop_type_shapes/vodlinkRow";
 import MatchupDisplay from "./matchupDisplay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChampionList from "../championList/championList";
 import {
   dbRoleToLoLRole,
   dbRoleToMatchupUrlRole,
 } from "../../../lol_data/roles";
-import { fullSearchLink, titleCase } from "../../utils";
+import { apiMatchupParams, fullSearchLink, titleCase } from "../../utils";
+import { fetchChampCounts } from "../../external_apis/vodlink";
 
-function MatchupSelect({ streamerRole, matchupData, counts }) {
+function MatchupSelect({ streamerRole, matchupData }) {
+  const [loading, setLoading] = useState(false);
+  const [counts, setCounts] = useState({});
   const [matchupRole, setMatchupRole] = useState(null);
   const urlBuilder = (key) => (value) => {
     const params = {
@@ -39,6 +42,34 @@ function MatchupSelect({ streamerRole, matchupData, counts }) {
     }
   };
   const closeChampionList = () => setMatchupRole(null);
+
+  useEffect(() => {
+    if (!matchupRole || counts[matchupRole]) {
+      return;
+    }
+    setLoading(true);
+    const champCountParams = {
+      ...apiMatchupParams(matchupData),
+      COUNT_ROLE: matchupRole,
+    };
+    delete champCountParams.PAGE;
+
+    fetchChampCounts(champCountParams)
+      .then((response) => {
+        setCounts((prevCounts) => {
+          return { ...prevCounts, [matchupRole]: response.data.counts };
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+        setCounts((prevCounts) => {
+          return { ...prevCounts, [matchupRole]: [] };
+        });
+      });
+  }, [matchupRole, matchupData, counts]);
+
   let urlRole;
   let team;
   let role;
@@ -66,8 +97,9 @@ function MatchupSelect({ streamerRole, matchupData, counts }) {
 
       {matchupRole && (
         <ChampionList
-          counts={counts[matchupRole]}
           linkGenerator={urlBuilder(urlRole)}
+          counts={counts[matchupRole]}
+          loading={loading}
         />
       )}
 

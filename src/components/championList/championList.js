@@ -6,7 +6,7 @@ import championJson from "../../../lol_data/champion.json";
 import Link from "next/link";
 const championData = Object.values(championJson);
 
-function ChampionList({ filter, counts, linkGenerator }) {
+function ChampionList({ filter, counts, linkGenerator, loading }) {
   const sortedChampions = useMemo(() => {
     return championData.sort((champA, champB) => {
       if (counts && counts.length > 0) {
@@ -22,6 +22,14 @@ function ChampionList({ filter, counts, linkGenerator }) {
       }
     });
   }, [counts]);
+
+  if (loading) {
+    return <div className={styles.container}>Loading...</div>;
+  }
+
+  // if (!counts) {
+  //   return null;
+  // }
 
   // TODO include message if we filter out the entire list
   return (
@@ -68,6 +76,7 @@ ChampionList.propTypes = {
       count: PropTypes.number,
     })
   ),
+  loading: PropTypes.bool,
 };
 
 export default ChampionList;

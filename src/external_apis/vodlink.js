@@ -1,6 +1,6 @@
 const axios = require("axios");
-const API_URL = process.env.VODLINK_API_URL;
-const API_AUTH_TOKEN = process.env.VODLINK_AUTH_TOKEN;
+const API_URL = process.env.NEXT_PUBLIC_VODLINK_API_URL;
+const API_AUTH_TOKEN = process.env.NEXT_PUBLIC_VODLINK_AUTH_TOKEN;
 
 function makeRequest(url, params) {
   return axios.get(url, {
