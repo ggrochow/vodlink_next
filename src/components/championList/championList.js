@@ -27,10 +27,6 @@ function ChampionList({ filter, counts, linkGenerator, loading }) {
     return <div className={styles.container}>Loading...</div>;
   }
 
-  // if (!counts) {
-  //   return null;
-  // }
-
   // TODO include message if we filter out the entire list
   return (
     <div className={styles.container}>
@@ -46,7 +42,7 @@ function ChampionList({ filter, counts, linkGenerator, loading }) {
         }
         return (
           <div key={champ.key} className={styles.championContainer}>
-            <Link href={linkGenerator(champ.key)}>
+            <Link href={linkGenerator(champ.key)} prefetch={false}>
               <a>
                 <div className={styles.iconContainer}>
                   <ChampionIcon
@@ -63,6 +59,7 @@ function ChampionList({ filter, counts, linkGenerator, loading }) {
           </div>
         );
       })}
+      {sortedChampions.length === 0 && <div>No results found</div>}
     </div>
   );
 }
