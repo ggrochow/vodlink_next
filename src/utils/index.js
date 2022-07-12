@@ -1,4 +1,5 @@
 import lolData from "../../lol_data/champion.json";
+import { dbRoles } from "../../lol_data/roles";
 
 export function championNameById(id) {
   return lolData[id]?.name;
@@ -82,7 +83,7 @@ export function apiMatchupParams(params, role) {
     }
   }
 
-  if (role) {
+  if (role && dbRoles.includes(role)) {
     apiParams.ROLE = role;
   }
 
