@@ -34,7 +34,7 @@ function VodlinkRow({ vodlink }) {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <p>{timeAgo}</p>
+        <p suppressHydrationWarning={true}>{timeAgo}</p>
         <p>{vodlink.region.replace(/[0-9]/g, "")}</p>
         <Link href={matchHistoryLink(vodlink.nativeMatchId)}>
           <a target="_blank">
