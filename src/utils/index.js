@@ -1,4 +1,5 @@
 import lolData from "../../lol_data/champion.json";
+import dayjs from "dayjs";
 import { dbRoles } from "../../lol_data/roles";
 
 export function championNameById(id) {
@@ -115,4 +116,23 @@ export function mapMatchupCounts(countResponses) {
   }
 
   return counts;
+}
+
+/***
+ * All vodlink data pages will revalidate at midnight
+ * this should hopefully sync up with the cache clearing on the API side and reduce outdated pages
+ * returns seconds until 1 minute after the next midnight,
+ * this should allow our midnight cache clear / new cursor job time to finish
+ *
+ * @returns {number} revalidate time in seconds
+ */
+export function pageRevalidateTime() {
+  const now = dayjs();
+  const midnight = now.hour(0).minute(1).second(0);
+  let revalidateTime = midnight.diff(now, "seconds");
+  if (revalidateTime <= 0) {
+    revalidateTime = midnight.add(1, "day").diff(now, "seconds");
+  }
+
+  return revalidateTime;
 }

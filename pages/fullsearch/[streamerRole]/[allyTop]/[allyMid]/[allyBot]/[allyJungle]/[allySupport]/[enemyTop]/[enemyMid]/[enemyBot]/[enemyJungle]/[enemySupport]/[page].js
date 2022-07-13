@@ -4,7 +4,6 @@ import {
   dbRoleToLoLRole,
 } from "../../../../../../../../../../../../../lol_data/roles";
 import { fetchVodlinksByFullMatchup } from "../../../../../../../../../../../../../src/external_apis/vodlink";
-import { pageRevalidateTime } from "../../../../../../../../../../../../../src/constants";
 import { getChampionById } from "../../../../../../../../../../../../../lol_data/champions";
 import { MatchupSelect } from "../../../../../../../../../../../../../src/components/matchupSelect";
 import {
@@ -15,6 +14,7 @@ import { Pagination } from "../../../../../../../../../../../../../src/component
 import {
   championIdKeys,
   fullSearchLink,
+  pageRevalidateTime,
   titleCase,
 } from "../../../../../../../../../../../../../src/utils";
 import { matchupData } from "../../../../../../../../../../../../../src/prop_type_shapes/vodlinkRow";
@@ -152,7 +152,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props,
-    revalidate: pageRevalidateTime,
+    revalidate: pageRevalidateTime(),
   };
 }
 

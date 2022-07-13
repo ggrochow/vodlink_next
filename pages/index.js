@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchVodlinksByFullMatchup } from "../src/external_apis/vodlink";
-import { fullSearchLink } from "../src/utils";
+import { fullSearchLink, pageRevalidateTime } from "../src/utils";
 import {
   VodlinkRow,
   vodlinkRowDataTransformer,
@@ -8,7 +8,6 @@ import {
 import { MatchupSelect } from "../src/components/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
-import { pageRevalidateTime } from "../src/constants";
 
 function Index({ vodlinks }) {
   const searchUrlBuilder = (key) => (value) => {
@@ -76,7 +75,7 @@ export async function getStaticProps() {
 
   return {
     props,
-    revalidate: pageRevalidateTime,
+    revalidate: pageRevalidateTime(),
   };
 }
 
