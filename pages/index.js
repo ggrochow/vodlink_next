@@ -8,6 +8,7 @@ import {
 import { MatchupSelect } from "../src/components/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
+import dayjs from "dayjs";
 
 function Index({ vodlinks }) {
   const searchUrlBuilder = (key) => (value) => {
@@ -58,7 +59,7 @@ function Index({ vodlinks }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps({ res }) {
   const props = {
     vodlinks: null,
     errors: null,
@@ -73,10 +74,16 @@ export async function getStaticProps() {
     props.error = error.message;
   }
 
-  return {
-    props,
-    revalidate: pageRevalidateTime(),
-  };
+  const timeToInvalid = pageRevalidateTime();
+  res.setHeader(
+    "Cache-Control",
+    `public, s-maxage=${timeToInvalid}, max-age=${timeToInvalid}, must-revalidate`
+  );
+
+  props.ttl = timeToInvalid;
+  props.ssrDate = dayjs().format("DD/MM/YYYY h:m A Z");
+
+  return { props };
 }
 
 export default Index;
