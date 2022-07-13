@@ -136,3 +136,8 @@ export function pageRevalidateTime() {
 
   return revalidateTime;
 }
+
+export function cacheControlString() {
+  const timeToInvalid = pageRevalidateTime();
+  return `public, s-maxage=${timeToInvalid}, max-age=${timeToInvalid}, must-revalidate`;
+}

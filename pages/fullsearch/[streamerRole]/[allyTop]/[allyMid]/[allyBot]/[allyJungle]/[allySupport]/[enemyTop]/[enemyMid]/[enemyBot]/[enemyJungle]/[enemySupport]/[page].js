@@ -12,6 +12,7 @@ import {
 } from "../../../../../../../../../../../../../src/components/vodlinkRow";
 import { Pagination } from "../../../../../../../../../../../../../src/components/pagination";
 import {
+  cacheControlString,
   championIdKeys,
   fullSearchLink,
   pageRevalidateTime,
@@ -20,6 +21,7 @@ import {
 import { matchupData } from "../../../../../../../../../../../../../src/prop_type_shapes/vodlinkRow";
 import { Head } from "../../../../../../../../../../../../../src/components/head";
 import React from "react";
+import dayjs from "dayjs";
 
 function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
   const searchUrlBuilder = (key) => (value) => {
@@ -102,7 +104,7 @@ FullSearch.propTypes = {
   }),
 };
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params, res }) {
   const props = {};
   const apiParams = {};
 
@@ -145,6 +147,10 @@ export async function getStaticProps({ params }) {
     const vodlinkResponse = await fetchVodlinksByFullMatchup(apiParams);
 
     props.vodlinks = vodlinkResponse.data;
+
+    res.setHeader("Cache-Control", cacheControlString());
+    props.ttl = pageRevalidateTime();
+    props.ssrDate = dayjs().format("DD/MM/YYYY h:m A Z");
   } catch (error) {
     console.error(JSON.stringify(error?.response?.data, null, 4));
     props.error = error.message;
@@ -152,14 +158,6 @@ export async function getStaticProps({ params }) {
 
   return {
     props,
-    revalidate: pageRevalidateTime(),
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: "blocking",
   };
 }
 

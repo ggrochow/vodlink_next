@@ -1,6 +1,10 @@
 import React from "react";
 import { fetchVodlinksByFullMatchup } from "../src/external_apis/vodlink";
-import { fullSearchLink, pageRevalidateTime } from "../src/utils";
+import {
+  cacheControlString,
+  fullSearchLink,
+  pageRevalidateTime,
+} from "../src/utils";
 import {
   VodlinkRow,
   vodlinkRowDataTransformer,
@@ -67,21 +71,15 @@ export async function getServerSideProps({ res }) {
 
   try {
     const vodlinkResults = await fetchVodlinksByFullMatchup({});
-
     props.vodlinks = vodlinkResults.data;
+
+    res.setHeader("Cache-Control", cacheControlString());
+    props.ttl = pageRevalidateTime();
+    props.ssrDate = dayjs().format("DD/MM/YYYY h:m A Z");
   } catch (error) {
     console.error(error);
     props.error = error.message;
   }
-
-  const timeToInvalid = pageRevalidateTime();
-  res.setHeader(
-    "Cache-Control",
-    `public, s-maxage=${timeToInvalid}, max-age=${timeToInvalid}, must-revalidate`
-  );
-
-  props.ttl = timeToInvalid;
-  props.ssrDate = dayjs().format("DD/MM/YYYY h:m A Z");
 
   return { props };
 }
