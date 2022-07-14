@@ -30,7 +30,6 @@ function MatchupDisplay({
       <div className={styles.roleRow}>
         {DB_ROLES.map((role) => {
           const roleData = getRoleByDbRoleAndRank(role, getRoleRank(role));
-          // TODO include role counts somewhere
           return (
             <div key={role}>
               {role === streamerRole && (
