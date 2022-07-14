@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from "./matchupSelect.module.scss";
 import { matchupData } from "../../prop_type_shapes/vodlinkRow";
 import MatchupDisplay from "./matchupDisplay";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChampionList from "../championList/championList";
 import {
   dbRoleToLoLRole,
@@ -10,6 +10,7 @@ import {
 } from "../../../lol_data/roles";
 import { apiMatchupParams, fullSearchLink, titleCase } from "../../utils";
 import { fetchChampCounts } from "../../external_apis/vodlink";
+import { LoadingSpinner } from "../loadingSpinner";
 
 function MatchupSelect({ streamerRole, matchupData }) {
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,9 @@ function MatchupSelect({ streamerRole, matchupData }) {
     }
   };
   const closeChampionList = () => setMatchupRole(null);
+  const handleLinkClick = () => {
+    setLoading(true);
+  };
 
   useEffect(() => {
     if (!matchupRole || counts[matchupRole]) {
@@ -85,6 +89,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
         streamerRole={streamerRole}
         matchupData={matchupData}
         onChampionClick={handleChampionClick}
+        onRoleClick={handleLinkClick}
       />
 
       {team && role && (
@@ -95,11 +100,18 @@ function MatchupSelect({ streamerRole, matchupData }) {
         </div>
       )}
 
-      {matchupRole && (
+      {loading && (
+        <div className={styles.loading}>
+          <LoadingSpinner />
+          Loading...
+        </div>
+      )}
+
+      {matchupRole && !loading && (
         <ChampionList
           linkGenerator={urlBuilder(urlRole)}
-          counts={counts[matchupRole]}
-          loading={loading}
+          counts={counts[matchupRole] || []}
+          onChampionClick={handleLinkClick}
         />
       )}
 

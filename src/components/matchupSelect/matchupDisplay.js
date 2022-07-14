@@ -12,6 +12,7 @@ function MatchupDisplay({
   urlBuilder,
   streamerRole,
   onChampionClick,
+  onRoleClick,
 }) {
   const selectedRoleRank = "DIAMOND";
   const defaultRoleRank = "IRON";
@@ -35,7 +36,13 @@ function MatchupDisplay({
               {role === streamerRole && (
                 <>
                   <Link href={urlBuilder("streamerRole")(undefined)}>
-                    <a>
+                    <a
+                      onClick={() => {
+                        if (onRoleClick) {
+                          onRoleClick();
+                        }
+                      }}
+                    >
                       <div className={styles.closeCircle}>&#10005;</div>
                     </a>
                   </Link>
@@ -45,7 +52,13 @@ function MatchupDisplay({
               )}
               {role !== streamerRole && (
                 <Link href={urlBuilder("streamerRole")(role)}>
-                  <a>
+                  <a
+                    onClick={() => {
+                      if (onRoleClick) {
+                        onRoleClick();
+                      }
+                    }}
+                  >
                     <RoleIcon role={roleData} width={50} height={50} />
                   </a>
                 </Link>
@@ -69,5 +82,6 @@ MatchupDisplay.propTypes = {
   urlBuilder: PropTypes.func.isRequired,
   streamerRole: PropTypes.string,
   onChampionClick: PropTypes.func.isRequired,
+  onRoleClick: PropTypes.func.isRequired,
 };
 export default MatchupDisplay;
