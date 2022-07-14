@@ -6,12 +6,19 @@ import {
 } from "../../../lol_data/roles";
 import styles from "./matchupSelect.module.scss";
 import { ChampionIconId } from "../icons/championIcon";
-import { titleCase } from "../../utils";
+import { callBackIfExists, titleCase } from "../../utils";
 
 const keyName = (role, team) =>
   `${team.toLowerCase()}${titleCase(dbRoleToLoLRole(role))}`;
 
-function TeamRow({ matchupData, team, onChampionClick, urlBuilder }) {
+function TeamRow({
+  team,
+  matchupData,
+  urlBuilder,
+  onChampionClick,
+  onCloseClick,
+}) {
+  const onCloseClickHandler = callBackIfExists(onCloseClick);
   return (
     <div>
       {DB_ROLES.map((role) => {
@@ -23,7 +30,7 @@ function TeamRow({ matchupData, team, onChampionClick, urlBuilder }) {
               <Link
                 href={urlBuilder(dbRoleToMatchupUrlRole(role, team))(undefined)}
               >
-                <a className={styles.closeCircle}>
+                <a className={styles.closeCircle} onClick={onCloseClickHandler}>
                   <div>&#10005;</div>
                 </a>
               </Link>
@@ -40,4 +47,6 @@ function TeamRow({ matchupData, team, onChampionClick, urlBuilder }) {
     </div>
   );
 }
+
+// TODO proptypes
 export default TeamRow;

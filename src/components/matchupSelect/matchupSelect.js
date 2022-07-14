@@ -90,6 +90,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
         matchupData={matchupData}
         onChampionClick={handleChampionClick}
         onRoleClick={handleLinkClick}
+        onCloseClick={handleLinkClick}
       />
 
       {team && role && !loading && (
