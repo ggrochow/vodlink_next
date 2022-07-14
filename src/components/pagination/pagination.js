@@ -21,17 +21,25 @@ function Pagination({ total, limit, page, linkGenerator }) {
   // 1 / 5
   return (
     <div className={styles.container}>
-      {!showFirst && <span className={styles.disabled}>{firstArrow}</span>}
+      {!showFirst && (
+        <span className={styles.disabled} aria-hidden="true">
+          {firstArrow}
+        </span>
+      )}
       {showFirst && (
         <Link href={linkGenerator(1)}>
-          <a>{firstArrow}</a>
+          <a title="First Page">{firstArrow}</a>
         </Link>
       )}
 
-      {!showPrev && <span className={styles.disabled}>{prevArrow}</span>}
+      {!showPrev && (
+        <span className={styles.disabled} aria-hidden="true">
+          {prevArrow}
+        </span>
+      )}
       {showPrev && (
         <Link href={linkGenerator(previousPage)}>
-          <a>{prevArrow}</a>
+          <a title="Previous Page">{prevArrow}</a>
         </Link>
       )}
 
@@ -39,17 +47,25 @@ function Pagination({ total, limit, page, linkGenerator }) {
         Page {page} / {totalPages}
       </span>
 
-      {!showNext && <span className={styles.disabled}>{nextArrow}</span>}
+      {!showNext && (
+        <span className={styles.disabled} aria-hidden="true">
+          {nextArrow}
+        </span>
+      )}
       {showNext && (
         <Link href={linkGenerator(nextPage)}>
-          <a>{nextArrow}</a>
+          <a title="Next Page">{nextArrow}</a>
         </Link>
       )}
 
-      {!showLast && <span className={styles.disabled}>{lastArrow}</span>}
+      {!showLast && (
+        <span className={styles.disabled} aria-hidden="true">
+          {lastArrow}
+        </span>
+      )}
       {showLast && (
         <Link href={linkGenerator(totalPages)}>
-          <a>{lastArrow}</a>
+          <a title="Last Page">{lastArrow}</a>
         </Link>
       )}
     </div>

@@ -9,6 +9,7 @@ import ParticipantRow from "./participantRow";
 import { matchHistoryLink } from "../../utils";
 import dayjs from "dayjs";
 import Link from "next/link";
+import classnames from "classnames";
 
 const byTeam = (teamId) => (participant) => participant.teamId === teamId;
 
@@ -54,8 +55,10 @@ function VodlinkRow({ vodlink }) {
                 ? "GOLD"
                 : "IRON";
             return (
-              <div
-                className={role === selectedRole ? styles.selected : ""}
+              <button
+                className={classnames({
+                  [styles.selected]: role === selectedRole,
+                })}
                 key={role}
                 onClick={() => setRole(role)}
               >
@@ -64,7 +67,7 @@ function VodlinkRow({ vodlink }) {
                   height={75}
                   width={75}
                 />
-              </div>
+              </button>
             );
           })}
         </div>

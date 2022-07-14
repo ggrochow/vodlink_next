@@ -100,11 +100,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
         </div>
       )}
 
-      {loading && (
-        <div className={styles.loading}>
-          <LoadingSpinner />
-        </div>
-      )}
+      {loading && <LoadingSpinner />}
 
       {matchupRole && !loading && (
         <ChampionList

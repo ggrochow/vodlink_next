@@ -4,6 +4,13 @@
   border: constants.$borderSize solid constants.$borderDarkGray
 }
 
+@mixin imageButton {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+
 @mixin basicButton {
   @include basicBorder;
   background-color: constants.$darkGray;

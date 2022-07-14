@@ -1,4 +1,5 @@
 @use 'styles/constants';
+@use 'styles/mixins';
 
 @mixin selectedRole {
   background-color: constants.$lightGrey;
@@ -76,11 +77,15 @@
   }
 }
 
+
 .roles {
   background-color: constants.$darkGray;
-  > div {
-    border-left: constants.$borderSize solid constants.$darkGray;
-    border-right: constants.$borderSize solid constants.$darkGray;
+  > button {
+    @include mixins.imageButton;
+    padding: 5px;
+    border: constants.$borderSize solid constants.$darkGray;
+    border-bottom: none;
+    border-top: none;
     cursor: pointer;
 
     &.selected {
@@ -88,6 +93,7 @@
     }
   }
 }
+
 
 .participant {
   background-color: constants.$lightGrey;

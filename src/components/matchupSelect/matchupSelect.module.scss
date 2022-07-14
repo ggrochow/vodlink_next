@@ -63,8 +63,5 @@
 }
 
 .championButton {
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  background: none;
+  @include mixins.imageButton
 }

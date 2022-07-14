@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import Image from "next/future/image";
+import { titleCase } from "../../../utils";
 
 function RoleIcon({ role, height, width }) {
   return (
     <Image
-      title={role.role}
-      alt={role.role}
+      title={titleCase(role.role)}
+      alt={titleCase(role.role)}
       src={role.imageSrc}
       placeholder={"blur"}
       blurDataURL={role.imagePlaceholder}
