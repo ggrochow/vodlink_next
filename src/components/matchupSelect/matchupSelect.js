@@ -92,7 +92,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
         onRoleClick={handleLinkClick}
       />
 
-      {team && role && (
+      {team && role && !loading && (
         <div>
           <p className={styles.matchupRole}>
             {titleCase(team)} {titleCase(dbRoleToLoLRole(role))}
@@ -103,7 +103,6 @@ function MatchupSelect({ streamerRole, matchupData }) {
       {loading && (
         <div className={styles.loading}>
           <LoadingSpinner />
-          Loading...
         </div>
       )}
 
@@ -115,7 +114,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
         />
       )}
 
-      {matchupRole && (
+      {matchupRole && !loading && (
         <div className={styles.closeContainer}>
           <button className={styles.closeButton} onClick={closeChampionList}>
             Close

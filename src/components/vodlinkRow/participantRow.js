@@ -36,7 +36,7 @@ function ParticipantRow({ participant }) {
       </div>
       <div className={styles.participantRank}>
         <RankIcon width={75} height={75} rank={rank.rank} tier={rank.tier} />
-        {rank.lp !== undefined && <span>{rank.lp} lp</span>}
+        {rank.lp !== undefined && <span>{rank.lp}&nbsp;lp</span>}
       </div>
       <div className={styles.participantMastery}>
         <MasteryIcon width={75} height={75} masteryLevel={mastery.level} />
