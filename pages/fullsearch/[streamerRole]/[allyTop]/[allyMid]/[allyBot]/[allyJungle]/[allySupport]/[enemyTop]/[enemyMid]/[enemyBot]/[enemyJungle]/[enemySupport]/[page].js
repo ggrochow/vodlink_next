@@ -56,8 +56,6 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
         matchupData={matchupData}
       />
 
-      {pagination?.total}
-
       {pagination && (
         <Pagination
           total={pagination.total}
