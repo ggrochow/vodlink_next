@@ -12,6 +12,7 @@ function RoleIcon({ role, height, width }) {
       blurDataURL={role.imagePlaceholder}
       height={height}
       width={width}
+      style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
 }

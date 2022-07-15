@@ -15,6 +15,7 @@ function ChampionIconId({ championId, height, width, title }) {
         height={height}
         width={width}
         placeholder={"blur"}
+        style={{ aspectRatio: `${width} / ${height}` }}
       />
     );
   }
@@ -26,6 +27,7 @@ function ChampionIconId({ championId, height, width, title }) {
       height={height}
       name={title || champion.name}
       width={width}
+      style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
 }

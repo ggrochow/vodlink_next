@@ -1,6 +1,7 @@
 import lolData from "../../lol_data/champion.json";
 import dayjs from "dayjs";
-import { dbRoles } from "../../lol_data/roles";
+import { dbRoles, dbRoleToLoLRole } from "../../lol_data/roles";
+import { getChampionById } from "../../lol_data/champions";
 
 export function championNameById(id) {
   return lolData[id]?.name;
@@ -148,4 +149,90 @@ export function callBackIfExists(callback) {
       callback();
     }
   };
+}
+
+export function getMatchupDescriptionString(matchupData, streamerRole) {
+  const hasValidStreamerRole = dbRoles.includes(streamerRole);
+
+  let allyChampName;
+  if (hasValidStreamerRole) {
+    const allyChampId =
+      matchupData[`ally${titleCase(dbRoleToLoLRole(streamerRole))}`];
+    if (allyChampId) {
+      allyChampName = getChampionById(allyChampId)?.name;
+    }
+  }
+
+  let descriptionBody = "";
+  if (allyChampName) {
+    descriptionBody += ` ${allyChampName}`;
+  }
+  if (hasValidStreamerRole) {
+    descriptionBody += ` ${dbRoleToLoLRole(streamerRole).toLowerCase()}`;
+  }
+  if (descriptionBody) {
+    descriptionBody += " POV ";
+  }
+
+  const matchupString = getMatchupStrings(matchupData, streamerRole);
+
+  return `Find${descriptionBody} League of Legends games${matchupString}${
+    matchupString ? "" : " to watch"
+  }`;
+}
+
+function getMatchupStrings(matchupData, streamerRole) {
+  const matchupStrings = {
+    ALLY: [],
+    ENEMY: [],
+  };
+  for (const [teamRole, apiRole] of Object.entries(championIdKeys)) {
+    const championId = matchupData[teamRole];
+    if (championId) {
+      const champ = getChampionById(championId);
+      if (champ) {
+        const [team, role] = apiRole.split("_");
+        if (team === "ALLY" && role === streamerRole) {
+          continue;
+        }
+
+        matchupStrings[team].push(
+          `${champ.name} ${dbRoleToLoLRole(role).toLowerCase()}`
+        );
+      }
+    }
+  }
+
+  const strings = {
+    ally: getTeamStrings(matchupStrings.ALLY),
+    enemy: getTeamStrings(matchupStrings.ENEMY),
+  };
+
+  let returnString = "";
+  if (strings.ally) {
+    returnString += ` with ${strings.ally}`;
+  }
+  if (strings.enemy) {
+    returnString += ` against ${strings.enemy}`;
+  }
+
+  return returnString;
+}
+
+function getTeamStrings(matchupStrings) {
+  if (matchupStrings.length > 0) {
+    const lastTwoElements = [];
+    while (lastTwoElements.length < 2 && matchupStrings.length > 0) {
+      lastTwoElements.push(matchupStrings.pop());
+    }
+
+    const allyElements = [
+      ...matchupStrings,
+      lastTwoElements.filter((e) => e).join(" and "),
+    ];
+
+    return allyElements.join(", ");
+  } else {
+    return "";
+  }
 }

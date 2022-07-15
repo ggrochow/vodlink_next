@@ -12,6 +12,7 @@ function ChampionIcon({ name, placeholder, image, height, width }) {
       width={width}
       placeholder={"blur"}
       blurDataURL={placeholder}
+      style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
 }

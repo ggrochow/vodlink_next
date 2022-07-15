@@ -1,8 +1,5 @@
 import PropTypes from "prop-types";
-import {
-  dbRoles,
-  dbRoleToLoLRole,
-} from "../../../../../../../../../../../../../lol_data/roles";
+import { dbRoles } from "../../../../../../../../../../../../../lol_data/roles";
 import { fetchVodlinksByFullMatchup } from "../../../../../../../../../../../../../src/external_apis/vodlink";
 import { getChampionById } from "../../../../../../../../../../../../../lol_data/champions";
 import { MatchupSelect } from "../../../../../../../../../../../../../src/components/matchupSelect";
@@ -15,12 +12,12 @@ import {
   cacheControlString,
   championIdKeys,
   fullSearchLink,
+  getMatchupDescriptionString,
   pageRevalidateTime,
-  titleCase,
 } from "../../../../../../../../../../../../../src/utils";
 import { matchupData } from "../../../../../../../../../../../../../src/prop_type_shapes/vodlinkRow";
 import { Head } from "../../../../../../../../../../../../../src/components/head";
-import React from "react";
+import React, { useMemo } from "react";
 import dayjs from "dayjs";
 
 function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
@@ -44,20 +41,14 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
     return fullSearchLink(params);
   };
   const paginationUrlBuilder = searchUrlBuilder("page");
-  const hasValidStreamerRole = dbRoles.includes(streamerRole);
-  // TODO streamer champ if possible
-  // include matchup maybe?
   const { data, pagination } = vodlinks;
+  const descriptionString = useMemo(() => {
+    return getMatchupDescriptionString(matchupData, streamerRole);
+  }, [matchupData, streamerRole]);
+
   return (
     <div>
-      <Head
-        title="LoL VodFind"
-        description={`Search through ${pagination.total}${
-          hasValidStreamerRole
-            ? ` ${titleCase(dbRoleToLoLRole(streamerRole))}`
-            : ""
-        } matches`}
-      />
+      <Head title="LoL VodFind" description={descriptionString} />
 
       <MatchupSelect
         key={searchUrlBuilder()()}

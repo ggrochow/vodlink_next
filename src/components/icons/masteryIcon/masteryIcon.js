@@ -42,6 +42,7 @@ function MasteryIcon({ masteryLevel, height, width }) {
       width={width}
       src={getMasteryImg(masteryLevel)}
       placeholder={"blur"}
+      style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
 }

@@ -22,6 +22,7 @@ function RankIcon({ rank, tier, height, width }) {
       blurDataURL={rankData.imagePlaceholder}
       height={height}
       width={width}
+      style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
 }

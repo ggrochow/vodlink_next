@@ -24,6 +24,7 @@ function ParticipantRow({ participant }) {
                 height={25}
                 width={25}
                 alt={"Twitch Logo"}
+                style={{ aspectRatio: "1/1" }}
               />
               {channel.displayName}{" "}
               {channel.displayName.toLowerCase() !==

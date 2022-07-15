@@ -17,6 +17,7 @@ function RuneIcon({ runeId, height, width }) {
       placeholder={"blur"}
       height={height}
       width={width}
+      style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
 }
