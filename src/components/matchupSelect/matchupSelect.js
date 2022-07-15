@@ -5,10 +5,17 @@ import MatchupDisplay from "./matchupDisplay";
 import React, { useEffect, useState } from "react";
 import ChampionList from "../championList/championList";
 import {
+  dbRoles,
   dbRoleToLoLRole,
   dbRoleToMatchupUrlRole,
+  fullSearchParams,
 } from "../../../lol_data/roles";
-import { apiMatchupParams, fullSearchLink, titleCase } from "../../utils";
+import {
+  apiMatchupParams,
+  fullSearchLink,
+  matchupRolesSelected,
+  titleCase,
+} from "../../utils";
 import { fetchChampCounts } from "../../external_apis/vodlink";
 import { LoadingSpinner } from "../loadingSpinner";
 
@@ -16,6 +23,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
   const [loading, setLoading] = useState(false);
   const [counts, setCounts] = useState({});
   const [matchupRole, setMatchupRole] = useState(null);
+  const hasStreamerRole = streamerRole && dbRoles.includes(streamerRole);
   const urlBuilder = (key) => (value) => {
     const params = {
       streamerRole,
@@ -31,7 +39,17 @@ function MatchupSelect({ streamerRole, matchupData }) {
       enemyUtility: matchupData.enemySupport,
       page: 1,
     };
+
     params[key] = value;
+
+    if (
+      !hasStreamerRole &&
+      key.slice(0, 4) === "ally" &&
+      matchupRolesSelected(matchupData, "ally") === 0
+    ) {
+      const [_, dbRole] = fullSearchParams[key].split("_");
+      params.streamerRole = dbRole;
+    }
 
     return fullSearchLink(params);
   };
@@ -57,6 +75,11 @@ function MatchupSelect({ streamerRole, matchupData }) {
       COUNT_ROLE: matchupRole,
     };
     delete champCountParams.PAGE;
+
+    const [team, role] = matchupRole.split("_");
+    if (team === "ALLY" && matchupRolesSelected(matchupData, "ally") === 0) {
+      champCountParams.ROLE = role;
+    }
 
     fetchChampCounts(champCountParams)
       .then((response) => {
@@ -92,7 +115,6 @@ function MatchupSelect({ streamerRole, matchupData }) {
         onRoleClick={handleLinkClick}
         onCloseClick={handleLinkClick}
       />
-
       {team && role && !loading && (
         <div>
           <p className={styles.matchupRole}>
@@ -100,9 +122,7 @@ function MatchupSelect({ streamerRole, matchupData }) {
           </p>
         </div>
       )}
-
       {loading && <LoadingSpinner />}
-
       {matchupRole && !loading && (
         <ChampionList
           linkGenerator={urlBuilder(urlRole)}
@@ -110,7 +130,6 @@ function MatchupSelect({ streamerRole, matchupData }) {
           onChampionClick={handleLinkClick}
         />
       )}
-
       {matchupRole && !loading && (
         <div className={styles.closeContainer}>
           <button className={styles.closeButton} onClick={closeChampionList}>

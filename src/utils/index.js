@@ -1,6 +1,6 @@
 import lolData from "../../lol_data/champion.json";
 import dayjs from "dayjs";
-import { dbRoles, dbRoleToLoLRole } from "../../lol_data/roles";
+import { championIdKeys, dbRoles, dbRoleToLoLRole } from "../../lol_data/roles";
 import { getChampionById } from "../../lol_data/champions";
 
 export function championNameById(id) {
@@ -62,19 +62,6 @@ export function fullSearchLink({
 }) {
   return `/fullsearch/${streamerRole}/${allyTop}/${allyMiddle}/${allyBottom}/${allyJungle}/${allyUtility}/${enemyTop}/${enemyMiddle}/${enemyBottom}/${enemyJungle}/${enemyUtility}/${page}`;
 }
-
-export const championIdKeys = {
-  allyTop: "ALLY_TOP",
-  allyMid: "ALLY_MIDDLE",
-  allyBot: "ALLY_BOTTOM",
-  allyJungle: "ALLY_JUNGLE",
-  allySupport: "ALLY_UTILITY",
-  enemyTop: "ENEMY_TOP",
-  enemyMid: "ENEMY_MIDDLE",
-  enemyBot: "ENEMY_BOTTOM",
-  enemyJungle: "ENEMY_JUNGLE",
-  enemySupport: "ENEMY_UTILITY",
-};
 
 export function apiMatchupParams(params, role) {
   const apiParams = {};
@@ -235,4 +222,18 @@ function getTeamStrings(matchupStrings) {
   } else {
     return "";
   }
+}
+
+export function matchupRolesSelected(matchupData, team) {
+  return Object.keys(championIdKeys).reduce((acc, paramKey) => {
+    if (team && team !== paramKey.slice(0, team.length)) {
+      return acc;
+    }
+
+    if (matchupData[paramKey]) {
+      return acc + 1;
+    } else {
+      return acc;
+    }
+  }, 0);
 }

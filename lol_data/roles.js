@@ -35,6 +35,32 @@ export function shortRoleToDbRole(shortRole) {
   }
 }
 
+export const championIdKeys = {
+  allyTop: "ALLY_TOP",
+  allyMid: "ALLY_MIDDLE",
+  allyBot: "ALLY_BOTTOM",
+  allyJungle: "ALLY_JUNGLE",
+  allySupport: "ALLY_UTILITY",
+  enemyTop: "ENEMY_TOP",
+  enemyMid: "ENEMY_MIDDLE",
+  enemyBot: "ENEMY_BOTTOM",
+  enemyJungle: "ENEMY_JUNGLE",
+  enemySupport: "ENEMY_UTILITY",
+};
+
+export const fullSearchParams = {
+  allyTop: "ALLY_TOP",
+  allyMiddle: "ALLY_MIDDLE",
+  allyBottom: "ALLY_BOTTOM",
+  allyJungle: "ALLY_JUNGLE",
+  allyUtility: "ALLY_UTILITY",
+  enemyTop: "ENEMY_TOP",
+  enemyMiddle: "ENEMY_MIDDLE",
+  enemyBottom: "ENEMY_BOTTOM",
+  enemyJungle: "ENEMY_JUNGLE",
+  enemyUtility: "ENEMY_UTILITY",
+};
+
 export const dbRoles = ["TOP", "JUNGLE", "MIDDLE", "UTILITY", "BOTTOM"];
 export const shortRoles = ["MID", "SUP", "JG", "TOP", "BOT"];
 

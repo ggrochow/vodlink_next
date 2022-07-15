@@ -1,10 +1,6 @@
 import React from "react";
 import { fetchVodlinksByFullMatchup } from "../src/external_apis/vodlink";
-import {
-  cacheControlString,
-  fullSearchLink,
-  pageRevalidateTime,
-} from "../src/utils";
+import { cacheControlString, fullSearchLink } from "../src/utils";
 import {
   VodlinkRow,
   vodlinkRowDataTransformer,
@@ -12,7 +8,6 @@ import {
 import { MatchupSelect } from "../src/components/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
-import dayjs from "dayjs";
 
 function Index({ vodlinks }) {
   const searchUrlBuilder = (key) => (value) => {
@@ -74,8 +69,6 @@ export async function getServerSideProps({ res }) {
     props.vodlinks = vodlinkResults.data;
 
     res.setHeader("Cache-Control", cacheControlString());
-    props.ttl = pageRevalidateTime();
-    props.ssrDate = dayjs().format("DD/MM/YYYY h:m A Z");
   } catch (error) {
     console.error(error);
     props.error = error.message;
