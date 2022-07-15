@@ -44,13 +44,18 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
     return fullSearchLink(params);
   };
   const paginationUrlBuilder = searchUrlBuilder("page");
+  const hasValidStreamerRole = dbRoles.includes(streamerRole);
+  // TODO streamer champ if possible
+  // include matchup maybe?
   const { data, pagination } = vodlinks;
   return (
     <div>
       <Head
         title="LoL VodFind"
-        description={`Searching through ${pagination.total}${
-          streamerRole ? ` ${titleCase(dbRoleToLoLRole(streamerRole))}` : ""
+        description={`Search through ${pagination.total}${
+          hasValidStreamerRole
+            ? ` ${titleCase(dbRoleToLoLRole(streamerRole))}`
+            : ""
         } matches`}
       />
 

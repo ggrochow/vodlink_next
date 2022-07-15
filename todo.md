@@ -5,3 +5,4 @@ TODO
 - fix admin
 - channels page
 - home page / info page
+- when selecting ally champ, also select role if empty and first selection

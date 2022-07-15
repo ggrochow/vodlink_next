@@ -62,7 +62,7 @@ function Channels({ channels }) {
       .then((res) => {
         console.log(res.data);
         setChannelName("");
-        setSummoners([emptySummoner]);
+        setSummoners([{ ...emptySummoner }]);
       })
       .catch((err) => {
         console.error(err);
@@ -73,7 +73,7 @@ function Channels({ channels }) {
     <div>
       <h1>Channels</h1>
       <hr />
-      <div>
+      <div className={styles.inputs}>
         <label>
           Channel Name
           <input
@@ -188,8 +188,13 @@ Channels.propTypes = {
   ),
 };
 
-export async function getStaticProps() {
-  if (process.env.NODE_ENV !== "development") {
+export async function getServerSideProps({ req }) {
+  const envToken = process.env.ADMIN_COOKIE_TOKEN;
+  if (!envToken) {
+    return { notFound: true };
+  }
+  const cookieValue = req.cookies.VODFIND_ADMIN_ACCESS_TOKEN;
+  if (!cookieValue || cookieValue !== envToken) {
     return { notFound: true };
   }
 
@@ -207,7 +212,6 @@ export async function getStaticProps() {
 
   return {
     props,
-    revalidate: 60,
   };
 }
 

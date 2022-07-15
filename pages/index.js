@@ -29,7 +29,7 @@ function Index({ vodlinks }) {
     <div>
       <Head
         title="LoL VodFind"
-        description={`Search through ${pagination.total} LoL games by matchup to find vods to help you improve.`}
+        description={`Search through ${pagination.total} League of Legends games by matchup to get links directly to twitch vods of those games being played.`}
       />
       <MatchupSelect key={searchUrlBuilder()()} matchupData={{}} />
 
