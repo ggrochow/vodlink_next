@@ -2,6 +2,9 @@ const axios = require("axios");
 const API_URL = process.env.NEXT_PUBLIC_VODLINK_API_URL;
 const API_AUTH_TOKEN = process.env.NEXT_PUBLIC_VODLINK_AUTH_TOKEN;
 const ADMIN_API_AUTH_TOKEN = process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN;
+const adminHeaders = {
+  ["admin-authorization"]: `TOKEN ${ADMIN_API_AUTH_TOKEN}`,
+};
 
 function makeRequest(url, params) {
   return axios.get(url, {
@@ -13,7 +16,7 @@ function makeRequest(url, params) {
 function makeAdminRequest(url, params) {
   return axios.get(url, {
     params,
-    headers: { admin_authorization: `TOKEN ${ADMIN_API_AUTH_TOKEN}` },
+    headers: adminHeaders,
   });
 }
 
@@ -35,6 +38,6 @@ export function fetchTwitchChannels() {
 
 export function addChannelInfo(body) {
   return axios.post(`${API_URL}/admin/channels`, body, {
-    headers: { adminAuthorization: `TOKEN ${ADMIN_API_AUTH_TOKEN}` },
+    headers: adminHeaders,
   });
 }

@@ -5,4 +5,6 @@ TODO
 - fix admin
 - channels page
 - home page / info page
-- when selecting ally champ, also select role if empty and first selection
+- can shallow link and loading spinner in results to remove the need for next SSR, probably slower overall
+- vodlinkrow - if a match has >1 vods, and a role is selected, make sure streamerRole is selected over first vod found for team1
+- move mapvodlink data to serverside 
