@@ -10,12 +10,19 @@ import { matchHistoryLink } from "../../utils";
 import dayjs from "dayjs";
 import Link from "next/link";
 import classnames from "classnames";
+import { DB_ROLES } from "../../../lol_data/constants";
 
 const byTeam = (teamId) => (participant) => participant.teamId === teamId;
 
-function VodlinkRow({ vodlink }) {
+function VodlinkRow({ vodlink, streamerRole }) {
   const streamers = vodlink.participants.filter((p) => p.vod);
-  const streamer = streamers[0];
+  let streamer;
+  if (dbRoles.includes(streamerRole)) {
+    streamer = streamers.find((p) => p.role === streamerRole);
+  } else {
+    streamer = streamers[0];
+  }
+
   const [selectedRole, setRole] = useState(streamer.role);
   const teamOne = vodlink.participants.filter(byTeam(streamer.teamId));
   const teamTwo = vodlink.participants.filter(
@@ -86,6 +93,7 @@ VodlinkRow.propTypes = {
     region: PropTypes.string,
     participants: PropTypes.arrayOf(participantShape),
   }).isRequired,
+  streamerRole: PropTypes.oneOf([...DB_ROLES, "role"]),
 };
 
 export default VodlinkRow;

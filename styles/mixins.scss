@@ -24,3 +24,13 @@
     background-color: constants.$borderDarkGray;
   }
 }
+
+@mixin mediumGreyPanel {
+  border: constants.$borderSize solid constants.$borderDarkGray;
+  background-color: constants.$mediumGrey;
+  padding: 10px;
+
+  p {
+    text-align: center;
+  }
+}

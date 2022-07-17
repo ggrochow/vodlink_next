@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchVodlinksByFullMatchup } from "../src/external_apis/vodlink";
-import { cacheControlString, fullSearchLink } from "../src/utils";
+import { fullSearchLink, pageRevalidateTime } from "../src/utils";
 import {
   VodlinkRow,
   vodlinkRowDataTransformer,
@@ -9,7 +9,7 @@ import { MatchupSelect } from "../src/components/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
 
-function Index({ vodlinks }) {
+function Index({ vodlinks, pagination }) {
   const searchUrlBuilder = (key) => (value) => {
     const params = {
       [key]: value,
@@ -19,7 +19,6 @@ function Index({ vodlinks }) {
   };
   const paginationUrlBuilder = searchUrlBuilder("page");
 
-  const { pagination, data } = vodlinks;
   return (
     <div>
       <Head
@@ -37,16 +36,11 @@ function Index({ vodlinks }) {
         />
       )}
 
-      {data?.map((vodlink) => {
-        return (
-          <VodlinkRow
-            key={vodlink.native_match_id}
-            vodlink={vodlinkRowDataTransformer(vodlink)}
-          />
-        );
+      {vodlinks?.map((vodlink) => {
+        return <VodlinkRow key={vodlink.nativeMatchId} vodlink={vodlink} />;
       })}
 
-      {pagination && (data?.length || 0) > 1 && (
+      {pagination && (vodlinks?.length || 0) > 1 && (
         <Pagination
           total={pagination.total}
           limit={pagination.limit}
@@ -58,23 +52,26 @@ function Index({ vodlinks }) {
   );
 }
 
-export async function getServerSideProps({ res }) {
+export async function getStaticProps() {
   const props = {
     vodlinks: null,
+    pagination: null,
     errors: null,
   };
 
   try {
     const vodlinkResults = await fetchVodlinksByFullMatchup({});
-    props.vodlinks = vodlinkResults.data;
-
-    res.setHeader("Cache-Control", cacheControlString());
+    props.vodlinks = vodlinkResults.data.data.map(vodlinkRowDataTransformer);
+    props.pagination = vodlinkResults.data.pagination;
   } catch (error) {
     console.error(error);
     props.error = error.message;
   }
 
-  return { props };
+  return {
+    revalidate: pageRevalidateTime(),
+    props,
+  };
 }
 
 export default Index;

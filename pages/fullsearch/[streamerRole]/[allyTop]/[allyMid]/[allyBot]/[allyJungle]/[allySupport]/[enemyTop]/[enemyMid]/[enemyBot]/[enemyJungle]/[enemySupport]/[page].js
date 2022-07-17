@@ -19,8 +19,10 @@ import {
 import { matchupData } from "../../../../../../../../../../../../../src/prop_type_shapes/vodlinkRow";
 import { Head } from "../../../../../../../../../../../../../src/components/head";
 import React, { useMemo } from "react";
+import { NoVodlinksText } from "../../../../../../../../../../../../../src/components/noVodlinksText";
+import { InvalidPageText } from "../../../../../../../../../../../../../src/components/invalidPageText";
 
-function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
+function FullSearch({ streamerRole, matchupData, pagination, vodlinks, page }) {
   const searchUrlBuilder = (key) => (value) => {
     const params = {
       streamerRole,
@@ -41,21 +43,22 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
     return fullSearchLink(params);
   };
   const paginationUrlBuilder = searchUrlBuilder("page");
-  const { data, pagination } = vodlinks;
   const descriptionString = useMemo(() => {
     return getMatchupDescriptionString(matchupData, streamerRole);
   }, [matchupData, streamerRole]);
+  const invalidPage =
+    pagination.total > 0 &&
+    pagination.page > Math.ceil(pagination.total / pagination.limit);
+  const emptyResults = vodlinks.length === 0;
 
   return (
     <div>
       <Head title="LoL VodFind" description={descriptionString} />
-
       <MatchupSelect
         key={searchUrlBuilder()()}
         streamerRole={streamerRole}
         matchupData={matchupData}
       />
-
       {pagination && (
         <Pagination
           total={pagination.total}
@@ -64,17 +67,19 @@ function FullSearch({ streamerRole, matchupData, vodlinks, page }) {
           linkGenerator={paginationUrlBuilder}
         />
       )}
-
-      {data?.map((vodlink) => {
+      {vodlinks?.map((vodlink) => {
         return (
           <VodlinkRow
-            key={vodlink.native_match_id}
-            vodlink={vodlinkRowDataTransformer(vodlink)}
+            key={`${streamerRole}-${vodlink.nativeMatchId}`}
+            vodlink={vodlink}
+            streamerRole={streamerRole}
           />
         );
       })}
 
-      {pagination && (data?.length || 0) > 1 && (
+      {invalidPage && <InvalidPageText />}
+      {!invalidPage && emptyResults && <NoVodlinksText />}
+      {pagination && (vodlinks?.length || 0) > 1 && (
         <Pagination
           total={pagination.total}
           limit={pagination.limit}
@@ -90,14 +95,12 @@ FullSearch.propTypes = {
   streamerRole: PropTypes.string,
   matchupData: matchupData,
   page: PropTypes.number,
-  vodlinks: PropTypes.shape({
-    data: PropTypes.array,
-    pagination: PropTypes.shape({
-      total: PropTypes.number,
-      page: PropTypes.number,
-      limit: PropTypes.number,
-    }),
+  pagination: PropTypes.shape({
+    total: PropTypes.number,
+    page: PropTypes.number,
+    limit: PropTypes.number,
   }),
+  vodlinks: PropTypes.array,
 };
 
 export async function getServerSideProps({ params, res }) {
@@ -141,8 +144,8 @@ export async function getServerSideProps({ params, res }) {
 
   try {
     const vodlinkResponse = await fetchVodlinksByFullMatchup(apiParams);
-
-    props.vodlinks = vodlinkResponse.data;
+    props.vodlinks = vodlinkResponse.data.data.map(vodlinkRowDataTransformer);
+    props.pagination = vodlinkResponse.data.pagination;
 
     res.setHeader("Cache-Control", cacheControlString());
   } catch (error) {

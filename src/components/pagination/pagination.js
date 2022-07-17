@@ -5,11 +5,13 @@ import Link from "next/link";
 function Pagination({ total, limit, page, linkGenerator }) {
   const totalPages = Math.ceil(total / limit);
   const currentPage = page < 1 ? 1 : page > totalPages ? totalPages : page;
-  const previousPage = currentPage === 1 ? 1 : page - 1;
+  const previousPage =
+    currentPage === 1 ? 1 : page > totalPages ? totalPages : page - 1;
   const nextPage = currentPage === totalPages ? totalPages : page + 1;
+  const invalidPage = page > 1 && page > totalPages;
 
-  const showFirst = totalPages > 1 && page > 1;
-  const showPrev = totalPages > 1 && previousPage < page;
+  const showFirst = (totalPages > 1 && page > 1) || invalidPage;
+  const showPrev = (totalPages > 1 && previousPage < page) || invalidPage;
   const showNext = totalPages > 1 && nextPage > page;
   const showLast = totalPages > 1 && totalPages > page;
 
@@ -18,7 +20,6 @@ function Pagination({ total, limit, page, linkGenerator }) {
   const nextArrow = " > ";
   const lastArrow = "->";
 
-  // 1 / 5
   return (
     <div className={styles.container}>
       {!showFirst && (
@@ -44,7 +45,7 @@ function Pagination({ total, limit, page, linkGenerator }) {
       )}
 
       <span>
-        Page {page} / {totalPages}
+        Page {totalPages > 0 ? page : 0} / {totalPages}
       </span>
 
       {!showNext && (
