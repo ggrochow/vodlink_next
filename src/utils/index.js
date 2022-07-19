@@ -253,11 +253,12 @@ function roundNumberToString(num, roundTo) {
 
 const oneMillion = 1000000;
 const tenThousand = 10000;
+
 export function largeNumberToReadableString(num) {
   if (num > oneMillion) {
     return `${roundNumberToString(num, oneMillion)}m`;
   } else if (num > tenThousand) {
-    return `${roundNumberToString(num, tenThousand)}k`;
+    return `${roundNumberToString(num, 1000)}k`;
   } else {
     return `${num}`;
   }
