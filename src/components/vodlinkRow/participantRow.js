@@ -4,7 +4,7 @@ import { RankIcon } from "../icons/rankIcon";
 import { MasteryIcon } from "../icons/masteryIcon";
 import { RuneIcon } from "../icons/runeIcon";
 import Link from "next/link";
-import { twitchVodLink } from "../../utils";
+import { largeNumberToReadableString, twitchVodLink } from "../../utils";
 import Image from "next/future/image";
 import TwitchIcon from "../../../public/static/icons/twitch.svg";
 
@@ -41,7 +41,9 @@ function ParticipantRow({ participant }) {
       </div>
       <div className={styles.participantMastery}>
         <MasteryIcon width={75} height={75} masteryLevel={mastery.level} />
-        <span>{mastery.points}</span>
+        <span title={mastery.points}>
+          {largeNumberToReadableString(mastery.points)}
+        </span>
       </div>
       <div className={styles.participantRunes}>
         <div>

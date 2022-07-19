@@ -237,3 +237,28 @@ export function matchupRolesSelected(matchupData, team) {
     }
   }, 0);
 }
+
+function roundNumberToString(num, roundTo) {
+  let numberString = (num / roundTo).toFixed(1);
+  if (
+    numberString[numberString.length - 1] === "0" ||
+    numberString.length > 3
+  ) {
+    // remove trailing .#
+    numberString = numberString.slice(0, numberString.length - 2);
+  }
+
+  return numberString;
+}
+
+const oneMillion = 1000000;
+const tenThousand = 10000;
+export function largeNumberToReadableString(num) {
+  if (num > oneMillion) {
+    return `${roundNumberToString(num, oneMillion)}m`;
+  } else if (num > tenThousand) {
+    return `${roundNumberToString(num, tenThousand)}k`;
+  } else {
+    return `${num}`;
+  }
+}

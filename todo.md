@@ -6,3 +6,4 @@ TODO
 - update home page?
 - can shallow link and loading spinner in results to remove the need for next SSR, probably slower overall
 - priority load first load and select images
+- vodlink row role button on ios mobile
