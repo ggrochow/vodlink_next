@@ -42,7 +42,12 @@ function VodlinkRow({ vodlink, streamerRole }) {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <p suppressHydrationWarning={true}>{timeAgo}</p>
+        <p
+          suppressHydrationWarning={true}
+          title={matchStartDate.format("MMMM D, YYYY h:mm A")}
+        >
+          {timeAgo}
+        </p>
         <p>{vodlink.region.replace(/[0-9]/g, "")}</p>
         <Link href={matchHistoryLink(vodlink.nativeMatchId)}>
           <a target="_blank">
