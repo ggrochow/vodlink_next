@@ -1,9 +1,6 @@
 TODO 
-- message about submitting streamers to add
 - check how im using next image with layout and sizes
 - priority load first load and select images
-- vodlink row role button on ios mobile
-- favicon
 - channels page
 - info page
  
