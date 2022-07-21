@@ -5,7 +5,7 @@ import {
 } from "../../../../../../../../../../../../../lol_data/roles";
 import { fetchVodlinksByFullMatchup } from "../../../../../../../../../../../../../src/external_apis/vodlink";
 import { getChampionById } from "../../../../../../../../../../../../../lol_data/champions";
-import { MatchupSelect } from "../../../../../../../../../../../../../src/components/matchupSelect";
+import { MatchupSelect } from "../../../../../../../../../../../../../src/components/warnings/matchupSelect";
 import {
   VodlinkRow,
   vodlinkRowDataTransformer,
@@ -20,7 +20,8 @@ import { matchupData } from "../../../../../../../../../../../../../src/prop_typ
 import { Head } from "../../../../../../../../../../../../../src/components/head";
 import React, { useMemo } from "react";
 import { NoVodlinksText } from "../../../../../../../../../../../../../src/components/noVodlinksText";
-import { InvalidPageText } from "../../../../../../../../../../../../../src/components/invalidPageText";
+import { InvalidPageText } from "../../../../../../../../../../../../../src/components/warnings/invalidPageText";
+import { AddStreamersText } from "../../../../../../../../../../../../../src/components/warnings/addStreamersText";
 
 function FullSearch({ streamerRole, matchupData, pagination, vodlinks, page }) {
   const searchUrlBuilder = (key) => (value) => {
@@ -79,7 +80,8 @@ function FullSearch({ streamerRole, matchupData, pagination, vodlinks, page }) {
 
       {invalidPage && <InvalidPageText />}
       {!invalidPage && emptyResults && <NoVodlinksText />}
-      {pagination && (vodlinks?.length || 0) > 1 && (
+      {!invalidPage && vodlinks && pagination.total < 3 && <AddStreamersText />}
+      {pagination && (vodlinks?.length || 0) >= 1 && (
         <Pagination
           total={pagination.total}
           limit={pagination.limit}

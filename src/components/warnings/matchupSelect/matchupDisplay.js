@@ -1,12 +1,12 @@
 import styles from "./matchupSelect.module.scss";
-import { DB_ROLES } from "../../../lol_data/constants";
-import { getRoleByDbRoleAndRank } from "../../../lol_data/roles";
+import { DB_ROLES } from "../../../../lol_data/constants";
+import { getRoleByDbRoleAndRank } from "../../../../lol_data/roles";
 import Link from "next/link";
-import { RoleIcon } from "../icons/roleIcon";
+import { RoleIcon } from "../../icons/roleIcon";
 import PropTypes from "prop-types";
-import { matchupData } from "../../prop_type_shapes/vodlinkRow";
+import { matchupData } from "../../../prop_type_shapes/vodlinkRow";
 import TeamRow from "./teamRow";
-import { callBackIfExists } from "../../utils";
+import { callBackIfExists } from "../../../utils";
 
 function MatchupDisplay({
   matchupData,

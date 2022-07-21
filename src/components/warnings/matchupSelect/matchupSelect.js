@@ -1,23 +1,23 @@
 import PropTypes from "prop-types";
 import styles from "./matchupSelect.module.scss";
-import { matchupData } from "../../prop_type_shapes/vodlinkRow";
+import { matchupData } from "../../../prop_type_shapes/vodlinkRow";
 import MatchupDisplay from "./matchupDisplay";
 import React, { useEffect, useState } from "react";
-import ChampionList from "../championList/championList";
+import ChampionList from "../../championList/championList";
 import {
   dbRoles,
   dbRoleToLoLRole,
   dbRoleToMatchupUrlRole,
   fullSearchParams,
-} from "../../../lol_data/roles";
+} from "../../../../lol_data/roles";
 import {
   apiMatchupParams,
   fullSearchLink,
   matchupRolesSelected,
   titleCase,
-} from "../../utils";
-import { fetchChampCounts } from "../../external_apis/vodlink";
-import { LoadingSpinner } from "../loadingSpinner";
+} from "../../../utils";
+import { fetchChampCounts } from "../../../external_apis/vodlink";
+import { LoadingSpinner } from "../../loadingSpinner";
 
 function MatchupSelect({ streamerRole, matchupData }) {
   const [loading, setLoading] = useState(false);

@@ -1,0 +1,8 @@
+@use '../../../../styles/mixins';
+
+.container {
+  @include mixins.mediumGreyPanel;
+  a {
+    @include mixins.defaultLinkStyles;
+  }
+}

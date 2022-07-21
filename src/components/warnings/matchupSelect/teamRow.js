@@ -1,12 +1,12 @@
-import { DB_ROLES } from "../../../lol_data/constants";
+import { DB_ROLES } from "../../../../lol_data/constants";
 import Link from "next/link";
 import {
   dbRoleToLoLRole,
   dbRoleToMatchupUrlRole,
-} from "../../../lol_data/roles";
+} from "../../../../lol_data/roles";
 import styles from "./matchupSelect.module.scss";
-import { ChampionIconId } from "../icons/championIcon";
-import { callBackIfExists, titleCase } from "../../utils";
+import { ChampionIconId } from "../../icons/championIcon";
+import { callBackIfExists, titleCase } from "../../../utils";
 
 const keyName = (role, team) =>
   `${team.toLowerCase()}${titleCase(dbRoleToLoLRole(role))}`;

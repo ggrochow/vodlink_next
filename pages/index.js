@@ -5,7 +5,7 @@ import {
   VodlinkRow,
   vodlinkRowDataTransformer,
 } from "../src/components/vodlinkRow";
-import { MatchupSelect } from "../src/components/matchupSelect";
+import { MatchupSelect } from "../src/components/warnings/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
 

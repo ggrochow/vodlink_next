@@ -25,10 +25,18 @@
   }
 }
 
+@mixin defaultLinkStyles {
+  text-decoration: underline;
+  &:hover, &:focus {
+    color: darken(constants.$textWhite, 15);
+  }
+}
+
 @mixin mediumGreyPanel {
   border: constants.$borderSize solid constants.$borderDarkGray;
   background-color: constants.$mediumGrey;
   padding: 10px;
+  margin: 10px 0;
 
   p {
     text-align: center;
