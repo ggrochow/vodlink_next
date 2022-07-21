@@ -4,7 +4,7 @@ import { ChampionIconId } from "../icons/championIcon";
 import PropTypes from "prop-types";
 import { participantShape } from "../../prop_type_shapes/vodlinkRow";
 
-function TeamRow({ team, selectedRole }) {
+function TeamRow({ team, selectedRole, priority }) {
   return (
     <div className={styles.team}>
       {dbRoles.map((role) => {
@@ -18,6 +18,7 @@ function TeamRow({ team, selectedRole }) {
               championId={participant?.championId}
               height={75}
               width={75}
+              priority={priority}
             />
           </div>
         );
@@ -29,6 +30,7 @@ function TeamRow({ team, selectedRole }) {
 TeamRow.propTypes = {
   team: PropTypes.arrayOf(participantShape).isRequired,
   selectedRole: PropTypes.string,
+  priority: PropTypes.bool,
 };
 
 export default TeamRow;

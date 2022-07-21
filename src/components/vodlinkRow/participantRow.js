@@ -7,8 +7,9 @@ import Link from "next/link";
 import { largeNumberToReadableString, twitchVodLink } from "../../utils";
 import Image from "next/future/image";
 import TwitchIcon from "../../../public/static/icons/twitch.svg";
+import PropTypes from "prop-types";
 
-function ParticipantRow({ participant }) {
+function ParticipantRow({ participant, priority }) {
   if (!participant) {
     return null;
   }
@@ -25,6 +26,7 @@ function ParticipantRow({ participant }) {
                 width={25}
                 alt={"Twitch Logo"}
                 style={{ aspectRatio: "1/1" }}
+                priority={priority}
               />
               {channel.displayName}{" "}
               {channel.displayName.toLowerCase() !==
@@ -36,27 +38,68 @@ function ParticipantRow({ participant }) {
         {!vod && summonerName}
       </div>
       <div className={styles.participantRank}>
-        <RankIcon width={65} height={75} rank={rank.rank} tier={rank.tier} />
+        <RankIcon
+          width={65}
+          height={75}
+          rank={rank.rank}
+          tier={rank.tier}
+          priority={priority}
+        />
         {rank.lp !== undefined && <span>{rank.lp}&nbsp;lp</span>}
       </div>
       <div className={styles.participantMastery}>
-        <MasteryIcon width={75} height={75} masteryLevel={mastery.level} />
+        <MasteryIcon
+          width={75}
+          height={75}
+          masteryLevel={mastery.level}
+          priority={priority}
+        />
         <span title={mastery.points}>
           {largeNumberToReadableString(mastery.points)}
         </span>
       </div>
       <div className={styles.participantRunes}>
         <div>
-          <RuneIcon runeId={runes[0]} width={75} height={75} />
+          <RuneIcon
+            runeId={runes[0]}
+            width={75}
+            height={75}
+            priority={priority}
+          />
         </div>
         <div>
-          <RuneIcon runeId={runes[1]} width={40} height={40} />
-          <RuneIcon runeId={runes[2]} width={40} height={40} />
-          <RuneIcon runeId={runes[3]} width={40} height={40} />
+          <RuneIcon
+            runeId={runes[1]}
+            width={40}
+            height={40}
+            priority={priority}
+          />
+          <RuneIcon
+            runeId={runes[2]}
+            width={40}
+            height={40}
+            priority={priority}
+          />
+          <RuneIcon
+            runeId={runes[3]}
+            width={40}
+            height={40}
+            priority={priority}
+          />
         </div>
         <div>
-          <RuneIcon runeId={runes[4]} width={40} height={40} />
-          <RuneIcon runeId={runes[5]} width={40} height={40} />
+          <RuneIcon
+            runeId={runes[4]}
+            width={40}
+            height={40}
+            priority={priority}
+          />
+          <RuneIcon
+            runeId={runes[5]}
+            width={40}
+            height={40}
+            priority={priority}
+          />
         </div>
       </div>
     </div>
@@ -65,6 +108,7 @@ function ParticipantRow({ participant }) {
 
 ParticipantRow.propTypes = {
   participant: participantShape,
+  priority: PropTypes.bool,
 };
 
 export default ParticipantRow;

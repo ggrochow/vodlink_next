@@ -68,12 +68,13 @@ function FullSearch({ streamerRole, matchupData, pagination, vodlinks, page }) {
           linkGenerator={paginationUrlBuilder}
         />
       )}
-      {vodlinks?.map((vodlink) => {
+      {vodlinks?.map((vodlink, index) => {
         return (
           <VodlinkRow
             key={`${streamerRole}-${vodlink.nativeMatchId}`}
             vodlink={vodlink}
             streamerRole={streamerRole}
+            priority={index === 0}
           />
         );
       })}

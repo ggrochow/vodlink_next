@@ -46,13 +46,23 @@ function MatchupDisplay({
                     </a>
                   </Link>
 
-                  <RoleIcon role={roleData} width={50} height={50} />
+                  <RoleIcon
+                    role={roleData}
+                    width={50}
+                    height={50}
+                    priority={true}
+                  />
                 </>
               )}
               {role !== streamerRole && (
                 <Link href={urlBuilder("streamerRole")(role)}>
                   <a onClick={onRoleClickHandler}>
-                    <RoleIcon role={roleData} width={50} height={50} />
+                    <RoleIcon
+                      role={roleData}
+                      width={50}
+                      height={50}
+                      priority={true}
+                    />
                   </a>
                 </Link>
               )}

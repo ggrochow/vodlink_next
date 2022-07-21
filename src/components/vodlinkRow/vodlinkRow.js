@@ -14,7 +14,7 @@ import { DB_ROLES } from "../../../lol_data/constants";
 
 const byTeam = (teamId) => (participant) => participant.teamId === teamId;
 
-function VodlinkRow({ vodlink, streamerRole }) {
+function VodlinkRow({ vodlink, streamerRole, priority }) {
   const streamers = vodlink.participants.filter((p) => p.vod);
   let streamer;
   if (dbRoles.includes(streamerRole)) {
@@ -56,8 +56,12 @@ function VodlinkRow({ vodlink, streamerRole }) {
         </Link>
       </div>
       <div className={styles.matchup}>
-        <ParticipantRow participant={teamOneParticipant} />
-        <TeamRow team={teamOne} selectedRole={selectedRole} />
+        <ParticipantRow participant={teamOneParticipant} priority={priority} />
+        <TeamRow
+          team={teamOne}
+          selectedRole={selectedRole}
+          priority={priority}
+        />
         <div className={styles.roles}>
           {dbRoles.map((role) => {
             const roleRank =
@@ -78,13 +82,18 @@ function VodlinkRow({ vodlink, streamerRole }) {
                   role={getRoleByDbRoleAndRank(role, roleRank)}
                   height={75}
                   width={75}
+                  priority={priority}
                 />
               </button>
             );
           })}
         </div>
-        <TeamRow team={teamTwo} selectedRole={selectedRole} />
-        <ParticipantRow participant={teamTwoParticipant} />
+        <TeamRow
+          team={teamTwo}
+          selectedRole={selectedRole}
+          priority={priority}
+        />
+        <ParticipantRow participant={teamTwoParticipant} priority={priority} />
       </div>
     </div>
   );
@@ -99,6 +108,7 @@ VodlinkRow.propTypes = {
     participants: PropTypes.arrayOf(participantShape),
   }).isRequired,
   streamerRole: PropTypes.oneOf([...DB_ROLES, "role"]),
+  priority: PropTypes.bool,
 };
 
 export default VodlinkRow;

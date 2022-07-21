@@ -4,7 +4,7 @@ import Image from "next/future/image";
 import NoChampionIcon from "../../../../public/static/icons/no_champion.png";
 import PropTypes from "prop-types";
 
-function ChampionIconId({ championId, height, width, title }) {
+function ChampionIconId({ championId, height, width, title, priority }) {
   const champion = getChampionById(championId);
   if (!champion) {
     return (
@@ -14,7 +14,8 @@ function ChampionIconId({ championId, height, width, title }) {
         src={NoChampionIcon}
         height={height}
         width={width}
-        placeholder={"blur"}
+        placeholder={priority ? "empty" : "blur"}
+        priority={priority}
         style={{ aspectRatio: `${width} / ${height}` }}
       />
     );
@@ -27,6 +28,7 @@ function ChampionIconId({ championId, height, width, title }) {
       height={height}
       name={title || champion.name}
       width={width}
+      priority={priority}
       style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
@@ -37,6 +39,11 @@ ChampionIconId.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   title: PropTypes.string,
+  priority: PropTypes.bool,
+};
+
+ChampionIconId.defaultProps = {
+  priority: false,
 };
 
 export default ChampionIconId;

@@ -39,7 +39,12 @@ function TeamRow({
               className={styles.championButton}
               onClick={() => onChampionClick(`${team.toUpperCase()}_${role}`)}
             >
-              <ChampionIconId championId={champId} width={50} height={50} />
+              <ChampionIconId
+                championId={champId}
+                width={50}
+                height={50}
+                priority={true}
+              />
             </button>
           </div>
         );

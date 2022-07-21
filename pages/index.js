@@ -37,8 +37,14 @@ function Index({ vodlinks, pagination }) {
         />
       )}
 
-      {vodlinks?.map((vodlink) => {
-        return <VodlinkRow key={vodlink.nativeMatchId} vodlink={vodlink} />;
+      {vodlinks?.map((vodlink, index) => {
+        return (
+          <VodlinkRow
+            key={vodlink.nativeMatchId}
+            vodlink={vodlink}
+            priority={index === 0}
+          />
+        );
       })}
 
       <AddStreamersText />

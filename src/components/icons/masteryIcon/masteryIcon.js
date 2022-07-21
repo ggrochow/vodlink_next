@@ -27,7 +27,7 @@ function getMasteryImg(masteryLevel) {
   }
 }
 
-function MasteryIcon({ masteryLevel, height, width }) {
+function MasteryIcon({ masteryLevel, height, width, priority }) {
   const title = `Mastery ${masteryLevel}`;
   const image = getMasteryImg(masteryLevel);
   if (!image) {
@@ -41,7 +41,8 @@ function MasteryIcon({ masteryLevel, height, width }) {
       height={height}
       width={width}
       src={getMasteryImg(masteryLevel)}
-      placeholder={"blur"}
+      placeholder={priority ? "empty" : "blur"}
+      priority={priority}
       style={{ aspectRatio: `${width} / ${height}` }}
     />
   );
@@ -51,6 +52,11 @@ MasteryIcon.propTypes = {
   masteryLevel: PropTypes.number,
   height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
+  priority: PropTypes.bool,
+};
+
+MasteryIcon.defaultProps = {
+  priority: false,
 };
 
 export default MasteryIcon;
