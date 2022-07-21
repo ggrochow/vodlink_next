@@ -8,6 +8,7 @@ import {
 import { MatchupSelect } from "../src/components/warnings/matchupSelect";
 import { Pagination } from "../src/components/pagination";
 import { Head } from "../src/components/head";
+import { AddStreamersText } from "../src/components/warnings/addStreamersText";
 
 function Index({ vodlinks, pagination }) {
   const searchUrlBuilder = (key) => (value) => {
@@ -39,6 +40,8 @@ function Index({ vodlinks, pagination }) {
       {vodlinks?.map((vodlink) => {
         return <VodlinkRow key={vodlink.nativeMatchId} vodlink={vodlink} />;
       })}
+
+      <AddStreamersText />
 
       {pagination && (vodlinks?.length || 0) > 1 && (
         <Pagination

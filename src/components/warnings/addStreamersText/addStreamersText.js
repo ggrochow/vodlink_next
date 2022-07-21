@@ -6,8 +6,6 @@ function AddStreamersText() {
       <p>
         Want to see more results?
         <br />
-        Know a twitch streamer that plays this matchup?
-        <br />
         <br />
         <a
           href="https://forms.gle/D8fVytvwxLoWWHjH7"
